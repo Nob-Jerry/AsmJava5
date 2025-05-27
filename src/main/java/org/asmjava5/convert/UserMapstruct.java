@@ -1,7 +1,8 @@
 package org.asmjava5.convert;
 
 
-import org.asmjava5.data.dto.response.UserDTOResponse;
+import org.asmjava5.data.dto.request.UserDtoRequest;
+import org.asmjava5.data.dto.response.UserDtoResponse;
 import org.asmjava5.data.entity.User;
 import org.mapstruct.Mapper;
 
@@ -9,7 +10,7 @@ import java.util.List;
 
 @Mapper(componentModel = "spring")
 public interface UserMapstruct {
-
-    UserDTOResponse toUserDTOResponse(User user);
-    List<UserDTOResponse> toUserDTOResponseList(List<User> user);
+    UserDtoResponse toUserDTOResponse(User user);
+    User toUser(UserDtoRequest userDtoRequest);
+    List<UserDtoResponse> toUserDTOResponseList(List<User> user);
 }

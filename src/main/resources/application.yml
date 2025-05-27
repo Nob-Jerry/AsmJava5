@@ -4,6 +4,8 @@ server:
 spring:
   application:
     name: Jerry
+  liquibase:
+    enabled: false
 
   datasource:
     driver-class-name: oracle.jdbc.driver.OracleDriver
@@ -22,3 +24,11 @@ spring:
 
 jwt:
   secret-key: "YHeTykc90EQL7tozCEbrLoTVpZ/PxtOQ/MyoDDfaS20k+lHHFVXyVp7vviKI9dEm"
+
+logging:
+  level:
+    com.zaxxer.hikari: OFF
+    hikari: OFF
+    org.hibernate.SQL: OFF
+    org.hibernate.tool.hbm2ddl: OFF
+    org.hibernate.type: OFF

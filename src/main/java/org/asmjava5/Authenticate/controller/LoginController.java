@@ -24,11 +24,15 @@ public class LoginController {
     private final LoginService loginService;
     @PostMapping("/login")
     ApiResponse<LoginDtoResponse> login(@RequestBody LoginDtoRequest request) throws JOSEException {
-        return ApiResponse.<LoginDtoResponse>builder()
-                .status(HttpStatus.OK.value())
-                .success(true)
-                .data(loginService.authenticate(request))
-                .build();
+        try {
+            return ApiResponse.<LoginDtoResponse>builder()
+                    .status(HttpStatus.OK.value())
+                    .success(true)
+                    .data(loginService.authenticate(request))
+                    .build();
+        } catch (ParseException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     @PostMapping("/introspect")

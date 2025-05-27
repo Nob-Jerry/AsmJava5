@@ -10,5 +10,4 @@ import org.asmjava5.enums.ErrorCode;
 @AllArgsConstructor
 public class AppException extends RuntimeException{
     private ErrorCode errorCode;
-
 }
