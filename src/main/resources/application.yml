@@ -3,7 +3,7 @@ server:
 
 spring:
   application:
-    name: VitaminCode_BE
+    name: Jerry
 
   datasource:
     driver-class-name: oracle.jdbc.driver.OracleDriver
@@ -11,8 +11,14 @@ spring:
     username: POLY_OE
     password: T2403
 
-  security:
-    user:
-      name: admin
-      password: 123
-      roles: ADMIN
+  jpa:
+    open-in-view: false
+
+  thymeleaf:
+    check-template-location: false
+
+  devtools:
+    add-properties: false
+
+jwt:
+  secret-key: "YHeTykc90EQL7tozCEbrLoTVpZ/PxtOQ/MyoDDfaS20k+lHHFVXyVp7vviKI9dEm"

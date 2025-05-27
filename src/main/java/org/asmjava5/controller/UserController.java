@@ -16,6 +16,7 @@ public class UserController {
 
     @GetMapping("/all")
     public ApiResponse<?> getAll() {
+
         return ApiResponse.builder()
                 .success(true)
                 .data(userService.getUsers())

@@ -5,6 +5,8 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.List;
+
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
@@ -14,7 +16,7 @@ public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "USER_ID")
-    private Long id;
+    private Long userId;
 
     @Column(name = "USERNAME")
     private String username;
@@ -48,4 +50,11 @@ public class User {
 
     @Column(name = "CREATED_AT")
     private String createdAt;
+
+    @OneToMany(mappedBy = "user")
+    private List<Cart> carts;
+
+    @OneToMany(mappedBy = "user")
+    private List<Order> orders;
+
 }
