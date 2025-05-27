@@ -14,7 +14,7 @@ public enum ErrorCode {
     PASSWORD_INCORRECT(1001, "Password is incorrect"),
     CANNOT_SIGN_JWT(1001, "Cannot sign JWT"),
     INVALID_TOKEN(1001, "Invalid Token"),
-    USER_NOT_EXIST(1002, "User Not Exist")
+    USER_NOT_EXIST(1002, "User Not Exist"),
     ;
 
     private final Integer status;

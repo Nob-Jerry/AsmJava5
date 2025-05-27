@@ -38,18 +38,33 @@ public class UserImpl implements UserService {
     @Transactional
     public Boolean saveUser(UserDtoRequest userDtoRequest) {
         var user = userMapstruct.toUser(userDtoRequest);
-        if (userRepository.findUserByUsername(user.getUsername()) != null) {
+        if (userRepository.findUserByUsername(user.getUsername()) == null) {
             userRepository.save(user);
             return false;
-        }else {
-            userRepository.save(user);
-            return true;
         }
+        return false;
     }
 
     @Override
     @Transactional
     public Boolean deleteUserByUserName(String username) {
-        return null;
+        var userEntity = userRepository.findUserByUsername(username);
+        if (userEntity != null) {
+            userRepository.delete(userEntity);
+            return true;
+        }
+        return false;
+    }
+
+
+    @Override
+    @Transactional
+    public Boolean updateUser(UserDtoRequest userDtoRequest) throws AppException {
+        var user = userMapstruct.toUser(userDtoRequest);
+        if (userRepository.findUserByUsername(user.getUsername()) != null) {
+            userRepository.save(user);
+            return true;
+        }
+        return false;
     }
 }
