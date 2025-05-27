@@ -12,4 +12,5 @@ public interface UserService {
     UserDtoResponse getUserByUserName(String username) throws AppException;
     Boolean saveUser(UserDtoRequest userDtoRequest) throws AppException;
     Boolean deleteUserByUserName(String username) throws AppException;
+    Boolean updateUser(UserDtoRequest userDtoRequest) throws AppException;
 }

@@ -22,6 +22,7 @@ public class WebSecurityConfig {
             "/api/v1/auth/login",
             "/api/v1/auth/introspect",
             "/api/v1/auth/logout",
+            "/user/all"
     };
 
     @Bean
@@ -31,6 +32,7 @@ public class WebSecurityConfig {
         http
                 .authorizeHttpRequests(request -> request
                         .requestMatchers(HttpMethod.POST, PUBLIC_ENDPOINTS).permitAll()
+                        .requestMatchers(HttpMethod.GET, PUBLIC_ENDPOINTS).permitAll()
                         .requestMatchers("/api/v1/class/getAllClass").hasRole("ADMIN")
                         .anyRequest().authenticated()
                 )
