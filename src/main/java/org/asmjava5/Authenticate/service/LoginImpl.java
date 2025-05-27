@@ -32,20 +32,20 @@ import java.util.UUID;
 @RequiredArgsConstructor
 public class LoginImpl implements LoginService {
     private final UserRepository userRepository;
-    private final PasswordEncoder jwtDecoder;
+    private final PasswordEncoder passwordEncoder;
     private final InvalidTokenRepository invalidTokenRepository;
 
     @Value("${jwt.secret-key}")
     protected String SECRET_KEY;
 
     @Override
-    public LoginDtoResponse authenticate(LoginDtoRequest request) throws JOSEException {
+    public LoginDtoResponse authenticate(LoginDtoRequest request) throws JOSEException, ParseException {
         String username = request.getUsername();
 
         var user = userRepository.findByUsername(username)
                 .orElseThrow(() -> new AppException(ErrorCode.USER_EMPTY));
 
-        boolean authenticated = jwtDecoder.matches(request.getPassword()
+        boolean authenticated = passwordEncoder.matches(request.getPassword()
                 , user.getPassword());
         if (!authenticated) throw new AppException(ErrorCode.PASSWORD_INCORRECT);
 
@@ -80,22 +80,25 @@ public class LoginImpl implements LoginService {
     }
 
     private SignedJWT verifyJWT(String accessToken) throws ParseException, JOSEException {
-        SignedJWT signedJWT = SignedJWT.parse(accessToken);
-        JWSVerifier verifier = new MACVerifier(SECRET_KEY.getBytes());
 
-        Date expirationTime = signedJWT.getJWTClaimsSet().getExpirationTime();
-        boolean isExpired = expirationTime.after(new Date());
-        boolean isVerified = signedJWT.verify(verifier);
+            SignedJWT signedJWT = SignedJWT.parse(accessToken);
 
-        String jwtId = signedJWT.getJWTClaimsSet().getJWTID();
-        boolean isInvalidLogout = invalidTokenRepository
-                .existsInvalidTokenByInvalidTokenId(jwtId);
+            JWSVerifier verifier = new MACVerifier(SECRET_KEY.getBytes());
 
-        if (!(isExpired && isVerified && !isInvalidLogout)) {
-            throw new AppException(ErrorCode.INVALID_TOKEN);
-        }
+            Date expirationTime = signedJWT.getJWTClaimsSet().getExpirationTime();
 
-        return signedJWT;
+            boolean isExpired = expirationTime.before(new Date());
+            boolean isVerified = signedJWT.verify(verifier);
+
+            String jwtId = signedJWT.getJWTClaimsSet().getJWTID();
+            boolean isInvalidLogout = invalidTokenRepository
+                    .existsInvalidTokenByInvalidTokenId(jwtId);
+
+            if (!(isExpired && isVerified && !isInvalidLogout)) {
+                throw new AppException(ErrorCode.INVALID_TOKEN);
+            }
+
+            return signedJWT;
     }
 
     private String generateAccessToken(User user) throws JOSEException {
@@ -107,7 +110,7 @@ public class LoginImpl implements LoginService {
         JWTClaimsSet jwtClaimsSet = new JWTClaimsSet.Builder()
                 .subject(userName)
                 .jwtID(generateUUID())
-                .issuer("Jerry")
+                .issuer("Jerry.com")
                 .claim("scope", roleName)
                 .issueTime(new Date())
                 .expirationTime(Date
