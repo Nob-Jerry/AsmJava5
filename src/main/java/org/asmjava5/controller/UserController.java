@@ -26,7 +26,6 @@ public class UserController {
 
     @GetMapping("/all")
     public ResponseEntity<?> getAll() {
-        try {
             return ResponseEntity.ok(
                      ApiResponse.builder()
                              .status(200)
@@ -34,56 +33,37 @@ public class UserController {
                              .data(userService.getUsers())
                              .build()
             );
-        } catch (Exception e) {
-            log.error("Error: ", e);
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-                    .body( ApiResponse.builder()
-                            .status(500)
-                            .message(e.getMessage())
-                            .build());
-        }
     }
     @PostMapping("/save")
-    public ApiResponse<?> save(@RequestBody UserDtoRequest userDtoRequest) {
-        return ApiResponse.builder()
-                .success(true)
-                .data(userService.saveUser(userDtoRequest))
-                .message("Successfully saved user")
-                .build();
+    public ResponseEntity<?> save(@RequestBody UserDtoRequest userDtoRequest) {
+        return ResponseEntity.ok(
+                ApiResponse.builder()
+                        .success(true)
+                        .data(userService.saveUser(userDtoRequest))
+                        .message("Successfully saved user")
+                        .build()
+        );
     }
 
     @PutMapping("/update")
     public ResponseEntity<?> update(@RequestBody UserDtoRequest userDtoRequest){
-        Map<String, Object> resultMapAPI = new LinkedHashMap<>();
-        try {
-            resultMapAPI.put("status", 200);
-            resultMapAPI.put("success", true);
-            resultMapAPI.put("data", userService.saveUser(userDtoRequest));
-        } catch (Exception e) {
-            resultMapAPI.put("status", 500);
-            resultMapAPI.put("success", false);
-            resultMapAPI.put("message", e.getMessage());
-            log.error("Fail to call API /user/update", e);
-        }
-        return ResponseEntity.ok(resultMapAPI);
+        return ResponseEntity.ok(
+                ApiResponse.builder()
+                        .success(true)
+                        .data(userService.updateUser(userDtoRequest))
+                        .message("Successfully saved user")
+                        .build()
+        );
+
     }
 
     @PostMapping("/delete/{name}")
     public ResponseEntity<?> delete(@RequestParam("name")String name){
-        try{
             return ResponseEntity.ok(
                     ApiResponse.builder()
                             .status(200)
                             .message("Delete success")
                             .build()
             );
-        } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(
-                    ApiResponse.builder()
-                            .status(500)
-                            .message("Fail to delete"+ e.getMessage())
-                            .build()
-            );
-        }
     }
 }

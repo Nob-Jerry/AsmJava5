@@ -4,10 +4,11 @@ import lombok.RequiredArgsConstructor;
 import org.asmjava5.convert.CartItemMapstruct;
 import org.asmjava5.data.dto.request.CartItemDtoRequest;
 import org.asmjava5.data.dto.response.CartItemDtoResponse;
+import org.asmjava5.enums.ErrorCode;
+import org.asmjava5.exception.AppException;
 import org.asmjava5.repository.CartItemRepository;
 import org.asmjava5.service.CartItemService;
 import org.springframework.stereotype.Service;
-
 import java.util.List;
 
 @Service
@@ -18,26 +19,35 @@ public class CartItemImpl implements CartItemService {
     private final CartItemMapstruct cartItemMapstruct;
 
     @Override
-    public List<CartItemDtoResponse> getCartItems(String username) {
-        var cartItemList = cartItemRepository.findByCart_User_Username(username);
-        return cartItemMapstruct.toCartItemResponseList(cartItemList);
-    }
-
-    @Override
-    public CartItemDtoResponse getCartItem(String username, String productName) {
-        var cartItem = cartItemRepository.findByCart_User_UsernameAndProduct_ProductName(username, productName);
-        return cartItemMapstruct.toCartItemDtoResponse(cartItem);
-    }
-
-    @Override
-    public Boolean deleteCartItem(String username, String productName) {
-        var cartItem = cartItemRepository.findByCart_User_UsernameAndProduct_ProductName(username, productName);
-        if (cartItem != null) {
-            cartItemRepository.delete(cartItem);
-            return true;
+    public List<CartItemDtoResponse> getCartItems(String username)throws RuntimeException {
+        try {
+            var cartItemList = cartItemRepository.findByCart_User_Username(username);
+            return cartItemMapstruct.toCartItemResponseList(cartItemList);
+        } catch (RuntimeException e) {
+            throw new AppException(ErrorCode.BAD_SQL);
         }
-        return false;
     }
+
+    @Override
+    public Boolean deleteCartItem(Long userId, Long productId) {
+        try{
+            cartItemRepository.deleteByCart_User_UserIdAndProduct_ProductId(userId, productId);
+            return true;
+        } catch (RuntimeException e) {
+            throw new AppException(ErrorCode.BAD_SQL);
+        }
+    }
+
+    @Override
+    public Boolean deleteCartItemList(Long userId, List<Long> productId) {
+        try{
+            cartItemRepository.deleteByCart_User_UserIdAndProduct_ProductIdIn(userId, productId);
+            return true;
+        } catch (RuntimeException e) {
+            throw new AppException(ErrorCode.BAD_SQL);
+        }
+    }
+
 
     @Override
     public Boolean deleteAllCartItem(String username) {
@@ -51,21 +61,31 @@ public class CartItemImpl implements CartItemService {
 
     @Override
     public Boolean updateCartItem(CartItemDtoRequest cartItemDtoRequest) {
-        var cartItem = cartItemMapstruct.toCartItem(cartItemDtoRequest);
-        if (cartItemRepository.findByCart_User_UsernameAndProduct_ProductName(cartItem.getCart().getUser().getUsername(),cartItem.getProduct().getProductName()) != null) {
-            cartItemRepository.save(cartItem);
-            return true;
+        try{
+            var cartItem = cartItemMapstruct.toCartItem(cartItemDtoRequest);
+            var check = cartItemRepository.findById(cartItem.getCartItemId());
+            if(check != null) {
+                cartItemRepository.saveAndFlush(cartItem);
+                return true;
+            }
+            return false;
+        } catch (RuntimeException e) {
+            throw new AppException(ErrorCode.BAD_SQL);
         }
-        return false;
     }
 
     @Override
     public Boolean addCartItem(CartItemDtoRequest cartItemDtoRequest) {
-        var cartItem = cartItemMapstruct.toCartItem(cartItemDtoRequest);
-        if (cartItemRepository.findByCart_User_UsernameAndProduct_ProductName(cartItem.getCart().getUser().getUsername(),cartItem.getProduct().getProductName()) == null) {
-            cartItemRepository.save(cartItem);
-            return true;
+        try{
+            var cartItem = cartItemMapstruct.toCartItem(cartItemDtoRequest);
+            var check = cartItemRepository.findById(cartItem.getCartItemId());
+            if(check == null) {
+                cartItemRepository.saveAndFlush(cartItem);
+                return true;
+            }
+            return false;
+        } catch (RuntimeException e) {
+            throw new AppException(ErrorCode.BAD_SQL);
         }
-        return false;
     }
 }
