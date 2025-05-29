@@ -15,6 +15,7 @@ public enum ErrorCode {
     FAIL_DELETE(1002, "Fail to delete"),
     USER_EMPTY(1000, "User is empty"),
     T_EMPTY(1000, "is not exist"),
+    LIST_EMPTY(1000, "List is empty"),
     PASSWORD_INCORRECT(1001, "Password is incorrect"),
     CANNOT_SIGN_JWT(1001, "Cannot sign JWT"),
     INVALID_TOKEN(1001, "Invalid Token"),
