@@ -49,9 +49,8 @@ public class UserImpl implements UserService {
             }else {
                 throw new AppException(ErrorCode.FAIL_TO_SAVE_UPDATE);
             }
-
-
     }
+
 
     @Override
     @Transactional

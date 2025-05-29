@@ -11,5 +11,4 @@ public interface CartItemService {
     Boolean deleteCartItemList(Long userId, List<Long> productId);
     Boolean updateCartItem(CartItemDtoRequest cartItemDtoRequest);
     Boolean addCartItem(CartItemDtoRequest cartItemDtoRequest);
-
 }

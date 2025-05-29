@@ -8,14 +8,17 @@ import lombok.RequiredArgsConstructor;
 @AllArgsConstructor
 public enum ErrorCode {
     BAD_SQL(500, "Bad SQL! Vui lòng check lại câu lệnh sql"),
+    FAIL_TO_SAVE_UPDATE(501, "Fail to save or update"),
     UNCAUGHT_EXCEPTION(500, "Uncaught Exception! Chưa bắt được ngoại lệ"),
-    LIST_USER_EMPTY(1000, "List user is empty"),
+    FAIL_GET_LIST(1000, "Fail to get List"),
+    FAIL_GET_ONE(1001, "Fail to get One"),
+    FAIL_DELETE(1002, "Fail to delete"),
     USER_EMPTY(1000, "User is empty"),
     T_EMPTY(1000, "is not exist"),
     PASSWORD_INCORRECT(1001, "Password is incorrect"),
     CANNOT_SIGN_JWT(1001, "Cannot sign JWT"),
     INVALID_TOKEN(1001, "Invalid Token"),
-    USER_NOT_EXIST(1002, "User Not Exist")
+    USER_NOT_EXIST(1002, "User Not Exist"),
     ;
 
     private final Integer status;
