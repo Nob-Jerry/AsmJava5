@@ -11,6 +11,7 @@ import org.asmjava5.service.UserService;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.sql.SQLException;
 import java.util.List;
 
 @Service
@@ -24,47 +25,63 @@ public class UserImpl implements UserService {
     @Override
     public List<UserDtoResponse> getUsers() {
         var listUserEntity = userRepository.findAll();
-        if (listUserEntity.isEmpty()) throw new AppException(ErrorCode.LIST_USER_EMPTY);
+        if (listUserEntity.isEmpty()) throw new AppException(ErrorCode.FAIL_GET_LIST);
         return userMapstruct.toUserDTOResponseList(listUserEntity);
     }
 
     @Override
     public UserDtoResponse getUserByUserName(String username) {
-        var userEntity = userRepository.findUserByUsername(username);
-        return userMapstruct.toUserDTOResponse(userEntity);
+        try {
+            var userEntity = userRepository.findUserByUsername(username);
+            return userMapstruct.toUserDTOResponse(userEntity);
+        } catch (RuntimeException e) {
+            throw new AppException(ErrorCode.FAIL_GET_ONE);
+        }
     }
 
     @Override
     @Transactional
     public Boolean saveUser(UserDtoRequest userDtoRequest) {
-        var user = userMapstruct.toUser(userDtoRequest);
-        if (userRepository.findUserByUsername(user.getUsername()) == null) {
-            userRepository.save(user);
-            return false;
-        }
-        return false;
+            var user = userMapstruct.toUser(userDtoRequest);
+            if (userRepository.findUserByUsername(user.getUsername()) == null) {
+                userRepository.save(user);
+                return true;
+            }else {
+                throw new AppException(ErrorCode.FAIL_TO_SAVE_UPDATE);
+            }
+
+
     }
 
     @Override
     @Transactional
     public Boolean deleteUserByUserName(String username) {
-        var userEntity = userRepository.findUserByUsername(username);
-        if (userEntity != null) {
-            userRepository.delete(userEntity);
-            return true;
+        try {
+            var userEntity = userRepository.findUserByUsername(username);
+            if (userEntity != null) {
+                userRepository.delete(userEntity);
+                return true;
+            }
+            return false;
+        } catch (RuntimeException e) {
+            throw new RuntimeException(e);
         }
-        return false;
+
     }
 
 
     @Override
     @Transactional
-    public Boolean updateUser(UserDtoRequest userDtoRequest) throws AppException {
-        var user = userMapstruct.toUser(userDtoRequest);
-        if (userRepository.findUserByUsername(user.getUsername()) != null) {
-            userRepository.save(user);
-            return true;
+    public Boolean updateUser(UserDtoRequest userDtoRequest) {
+        try {
+            var user = userMapstruct.toUser(userDtoRequest);
+            if (userRepository.findUserByUsername(user.getUsername()) != null) {
+                userRepository.save(user);
+                return false;
+            }
+            return false;
+        } catch (RuntimeException e) {
+            throw new AppException(ErrorCode.FAIL_TO_SAVE_UPDATE);
         }
-        return false;
     }
 }

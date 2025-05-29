@@ -10,6 +10,7 @@ import org.asmjava5.exception.AppException;
 import org.asmjava5.repository.ProductRepository;
 import org.asmjava5.service.ProductService;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -25,47 +26,51 @@ public class ProductImpl implements ProductService {
     public List<ProductDtoResponse> getAllProducts() {
         List<Product> products = productRepository.findAll();
         if (products.isEmpty()) {
-            throw new AppException(ErrorCode.BAD_SQL);
+            throw new AppException(ErrorCode.FAIL_GET_LIST);
         }
         return productMapstruct.toProductDtoResponseList(products);
     }
 
     @Override
-    public ProductDtoResponse getProductById(long id) {
+    public ProductDtoResponse getProductById(Long id) {
         Product product = productRepository.findById(id)
-                .orElseThrow(() -> new AppException(ErrorCode.BAD_SQL));
+                .orElseThrow(() -> new AppException(ErrorCode.FAIL_GET_ONE));
         return productMapstruct.toProductDtoResponse(product);
     }
 
     @Override
+    @Transactional
     public Boolean saveProduct(ProductDtoRequest productDtoRequest) {
         try {
             Product product = productMapstruct.toProduct(productDtoRequest);
             productRepository.save(product);
             return true;
         } catch (RuntimeException e) {
-            throw new AppException(ErrorCode.BAD_SQL);
+            throw new AppException(ErrorCode.FAIL_TO_SAVE_UPDATE);
         }
     }
 
     @Override
+    @Transactional
     public Boolean updateProduct(ProductDtoRequest productDtoRequest) {
         try{
             Product product = productMapstruct.toProduct(productDtoRequest);
             productRepository.save(product);
             return true;
         } catch (RuntimeException e) {
-            throw new AppException(ErrorCode.BAD_SQL);
+            throw new AppException(ErrorCode.FAIL_TO_SAVE_UPDATE);
         }
     }
 
     @Override
-    public Boolean deleteProduct(long id) {
+    @Transactional
+    public Boolean deleteProduct(Long id) {
         try {
             var product = productRepository.findById(id).orElseThrow(() -> new AppException(ErrorCode.BAD_SQL));
+            productRepository.delete(product);
             return true;
         } catch (RuntimeException e) {
-            throw new AppException(ErrorCode.BAD_SQL);
+            throw new AppException(ErrorCode.FAIL_DELETE);
         }
     }
 }
