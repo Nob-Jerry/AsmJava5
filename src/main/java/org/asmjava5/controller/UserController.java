@@ -4,17 +4,11 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.asmjava5.common.ApiResponse;
 import org.asmjava5.data.dto.request.UserDtoRequest;
-import org.asmjava5.data.dto.response.UserDtoResponse;
-import org.asmjava5.enums.ErrorCode;
-import org.asmjava5.exception.AppException;
 import org.asmjava5.service.UserService;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
+import java.sql.SQLException;
 
 @RestController
 @RequestMapping("/user")
@@ -25,7 +19,7 @@ public class UserController {
     private final UserService userService;
 
     @GetMapping("/all")
-    public ResponseEntity<?> getAll() {
+    public ResponseEntity<?> getAll() throws SQLException {
             return ResponseEntity.ok(
                      ApiResponse.builder()
                              .status(200)
@@ -35,7 +29,7 @@ public class UserController {
             );
     }
     @PostMapping("/save")
-    public ResponseEntity<?> save(@RequestBody UserDtoRequest userDtoRequest) {
+    public ResponseEntity<?> save(@RequestBody UserDtoRequest userDtoRequest) throws SQLException {
         return ResponseEntity.ok(
                 ApiResponse.builder()
                         .success(true)
@@ -46,7 +40,7 @@ public class UserController {
     }
 
     @PutMapping("/update")
-    public ResponseEntity<?> update(@RequestBody UserDtoRequest userDtoRequest){
+    public ResponseEntity<?> update(@RequestBody UserDtoRequest userDtoRequest) throws SQLException {
         return ResponseEntity.ok(
                 ApiResponse.builder()
                         .success(true)
@@ -57,13 +51,14 @@ public class UserController {
 
     }
 
-    @PostMapping("/delete/{name}")
-    public ResponseEntity<?> delete(@RequestParam("name")String name){
-            return ResponseEntity.ok(
-                    ApiResponse.builder()
-                            .status(200)
-                            .message("Delete success")
-                            .build()
-            );
+    @PostMapping("/delete/{username}")
+    public ResponseEntity<?> delete(@RequestParam("username")String username) throws SQLException {
+        userService.deleteUserByUserName(username);
+        return ResponseEntity.ok(
+                ApiResponse.builder()
+                        .status(200)
+                        .message("Delete success")
+                        .build()
+        );
     }
 }

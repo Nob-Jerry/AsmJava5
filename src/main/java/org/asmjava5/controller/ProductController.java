@@ -8,6 +8,8 @@ import org.asmjava5.service.ProductService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.sql.SQLException;
+
 @RestController
 @RequestMapping("/product")
 @RequiredArgsConstructor
@@ -17,7 +19,7 @@ public class ProductController {
     private final ProductService productService;
 
     @GetMapping("/all")
-    public ResponseEntity<?> getAllProducts() {
+    public ResponseEntity<?> getAllProducts() throws SQLException {
         return ResponseEntity.ok(ApiResponse.builder()
                 .status(200)
                 .success(true)
@@ -26,7 +28,7 @@ public class ProductController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<?> getProductById(@PathVariable("id") Long id) {
+    public ResponseEntity<?> getProductById(@PathVariable("id") Long id) throws SQLException {
         return ResponseEntity.ok(ApiResponse.builder()
                 .status(200)
                 .success(true)
@@ -35,7 +37,7 @@ public class ProductController {
     }
 
     @PostMapping("/save")
-    public ResponseEntity<?> saveProduct(@RequestBody ProductDtoRequest productDtoRequest) {
+    public ResponseEntity<?> saveProduct(@RequestBody ProductDtoRequest productDtoRequest) throws SQLException {
         return ResponseEntity.ok(ApiResponse.builder()
                 .status(200)
                 .success(true)
@@ -44,7 +46,7 @@ public class ProductController {
     }
 
     @PutMapping("/update")
-    public ResponseEntity<?> updateProduct(@RequestBody ProductDtoRequest productDtoRequest) {
+    public ResponseEntity<?> updateProduct(@RequestBody ProductDtoRequest productDtoRequest) throws SQLException {
         return ResponseEntity.ok(ApiResponse.builder()
                 .status(200)
                 .success(true)
@@ -52,8 +54,9 @@ public class ProductController {
                 .build());
     }
 
-    @DeleteMapping("/{id}")
-    public ResponseEntity<?> deleteProduct(@PathVariable Long id) {
+    @DeleteMapping("/delete")
+    public ResponseEntity<?> deleteProduct(@RequestParam("id") Long id) throws SQLException {
+        productService.deleteProduct(id);
         return ResponseEntity.ok(ApiResponse.builder()
                 .status(200)
                 .success(true)

@@ -9,6 +9,8 @@ import org.asmjava5.exception.AppException;
 import org.asmjava5.repository.CartItemRepository;
 import org.asmjava5.service.CartItemService;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
 import java.util.List;
 
 @Service
@@ -19,47 +21,28 @@ public class CartItemImpl implements CartItemService {
     private final CartItemMapstruct cartItemMapstruct;
 
     @Override
-    public List<CartItemDtoResponse> getCartItems(String username)throws RuntimeException {
+    public List<CartItemDtoResponse> getCartItemList(String username) {
         try {
             var cartItemList = cartItemRepository.findByCart_User_Username(username);
             return cartItemMapstruct.toCartItemResponseList(cartItemList);
         } catch (RuntimeException e) {
-            throw new AppException(ErrorCode.BAD_SQL);
+            throw new AppException(ErrorCode.FAIL_GET_LIST);
         }
     }
 
     @Override
-    public Boolean deleteCartItem(Long userId, Long productId) {
-        try{
-            cartItemRepository.deleteByCart_User_UserIdAndProduct_ProductId(userId, productId);
-            return true;
-        } catch (RuntimeException e) {
-            throw new AppException(ErrorCode.BAD_SQL);
-        }
-    }
-
-    @Override
+    @Transactional
     public Boolean deleteCartItemList(Long userId, List<Long> productId) {
         try{
             cartItemRepository.deleteByCart_User_UserIdAndProduct_ProductIdIn(userId, productId);
             return true;
         } catch (RuntimeException e) {
-            throw new AppException(ErrorCode.BAD_SQL);
+            throw new AppException(ErrorCode.FAIL_DELETE);
         }
     }
 
-
     @Override
-    public Boolean deleteAllCartItem(String username) {
-        var cartItemList = cartItemRepository.findByCart_User_Username(username);
-        if (cartItemList != null) {
-            cartItemRepository.deleteAll(cartItemList);
-            return true;
-        }
-        return false;
-    }
-
-    @Override
+    @Transactional
     public Boolean updateCartItem(CartItemDtoRequest cartItemDtoRequest) {
         try{
             var cartItem = cartItemMapstruct.toCartItem(cartItemDtoRequest);
@@ -70,11 +53,12 @@ public class CartItemImpl implements CartItemService {
             }
             return false;
         } catch (RuntimeException e) {
-            throw new AppException(ErrorCode.BAD_SQL);
+            throw new AppException(ErrorCode.FAIL_TO_SAVE_UPDATE);
         }
     }
 
     @Override
+    @Transactional
     public Boolean addCartItem(CartItemDtoRequest cartItemDtoRequest) {
         try{
             var cartItem = cartItemMapstruct.toCartItem(cartItemDtoRequest);
@@ -85,7 +69,7 @@ public class CartItemImpl implements CartItemService {
             }
             return false;
         } catch (RuntimeException e) {
-            throw new AppException(ErrorCode.BAD_SQL);
+            throw new AppException(ErrorCode.FAIL_TO_SAVE_UPDATE);
         }
     }
 }
