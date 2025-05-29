@@ -8,8 +8,7 @@ import org.asmjava5.service.UserService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.LinkedHashMap;
-import java.util.Map;
+import java.sql.SQLException;
 
 @RestController
 @RequestMapping("/user")
@@ -20,37 +19,46 @@ public class UserController {
     private final UserService userService;
 
     @GetMapping("/all")
-    public ApiResponse<?> getAll() {
-
-        return ApiResponse.builder()
-                .success(true)
-                .message("Success")
-                .data(userService.getUsers())
-                .build();
+    public ResponseEntity<?> getAll() throws SQLException {
+            return ResponseEntity.ok(
+                     ApiResponse.builder()
+                             .status(200)
+                             .message("Success")
+                             .data(userService.getUsers())
+                             .build()
+            );
     }
     @PostMapping("/save")
-    public ApiResponse<?> save(@RequestBody UserDtoRequest userDtoRequest) {
-        return ApiResponse.builder()
-                .success(true)
-                .data(userService.saveUser(userDtoRequest))
-                .message("Successfully saved user")
-                .build();
+    public ResponseEntity<?> save(@RequestBody UserDtoRequest userDtoRequest) {
+        return ResponseEntity.ok(
+                ApiResponse.builder()
+                        .success(true)
+                        .data(userService.saveUser(userDtoRequest))
+                        .message("Successfully saved user")
+                        .build()
+        );
     }
 
     @PutMapping("/update")
-    public ResponseEntity<?> update(@RequestBody UserDtoRequest userDtoRequest){
-        Map<String, Object> resultMapAPI = new LinkedHashMap<>();
-        try {
-            resultMapAPI.put("status", 200);
-            resultMapAPI.put("success", true);
-            resultMapAPI.put("data", userService.saveUser(userDtoRequest));
-        } catch (Exception e) {
-            resultMapAPI.put("status", 500);
-            resultMapAPI.put("success", false);
-            resultMapAPI.put("message", e.getMessage());
-            log.error("Fail to call API /user/update", e);
-        }
-        return ResponseEntity.ok(resultMapAPI);
+    public ResponseEntity<?> update(@RequestBody UserDtoRequest userDtoRequest) {
+        return ResponseEntity.ok(
+                ApiResponse.builder()
+                        .success(true)
+                        .data(userService.updateUser(userDtoRequest))
+                        .message("Successfully saved user")
+                        .build()
+        );
+
     }
 
+    @PostMapping("/delete/{username}")
+    public ResponseEntity<?> delete(@RequestParam("username")String username) {
+        userService.deleteUserByUserName(username);
+        return ResponseEntity.ok(
+                ApiResponse.builder()
+                        .status(200)
+                        .message("Delete success")
+                        .build()
+        );
+    }
 }

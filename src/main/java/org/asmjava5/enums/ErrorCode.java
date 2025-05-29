@@ -11,6 +11,7 @@ public enum ErrorCode {
     UNCAUGHT_EXCEPTION(500, "Uncaught Exception! Chưa bắt được ngoại lệ"),
     LIST_USER_EMPTY(1000, "List user is empty"),
     USER_EMPTY(1000, "User is empty"),
+    T_EMPTY(1000, "is not exist"),
     PASSWORD_INCORRECT(1001, "Password is incorrect"),
     CANNOT_SIGN_JWT(1001, "Cannot sign JWT"),
     INVALID_TOKEN(1001, "Invalid Token"),
