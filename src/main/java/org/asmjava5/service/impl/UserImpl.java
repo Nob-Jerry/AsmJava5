@@ -49,39 +49,31 @@ public class UserImpl implements UserService {
             }else {
                 throw new AppException(ErrorCode.FAIL_TO_SAVE_UPDATE);
             }
-
-
     }
+
 
     @Override
     @Transactional
     public Boolean deleteUserByUserName(String username) {
-        try {
             var userEntity = userRepository.findUserByUsername(username);
             if (userEntity != null) {
                 userRepository.delete(userEntity);
                 return true;
+            }else {
+                throw new AppException(ErrorCode.FAIL_TO_SAVE_UPDATE);
             }
-            return false;
-        } catch (RuntimeException e) {
-            throw new RuntimeException(e);
-        }
-
     }
 
 
     @Override
     @Transactional
     public Boolean updateUser(UserDtoRequest userDtoRequest) {
-        try {
             var user = userMapstruct.toUser(userDtoRequest);
             if (userRepository.findUserByUsername(user.getUsername()) != null) {
                 userRepository.save(user);
                 return false;
+            }else {
+                throw new AppException(ErrorCode.FAIL_TO_SAVE_UPDATE);
             }
-            return false;
-        } catch (RuntimeException e) {
-            throw new AppException(ErrorCode.FAIL_TO_SAVE_UPDATE);
-        }
     }
 }

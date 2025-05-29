@@ -8,9 +8,9 @@ import java.sql.SQLException;
 import java.util.List;
 
 public interface ProductService {
-    List<ProductDtoResponse> getAllProducts() throws SQLException;
-    ProductDtoResponse getProductById(Long id) throws SQLException;
-    Boolean saveProduct(ProductDtoRequest productDtoRequest) throws SQLException;
-    Boolean updateProduct(ProductDtoRequest productDtoRequest) throws SQLException;
-    Boolean deleteProduct(Long id) throws SQLException;
+    List<ProductDtoResponse> getAllProducts();
+    ProductDtoResponse getProductById(Long id);
+    Boolean saveProduct(ProductDtoRequest productDtoRequest);
+    Boolean updateProduct(ProductDtoRequest productDtoRequest);
+    Boolean deleteProduct(Long id);
 }

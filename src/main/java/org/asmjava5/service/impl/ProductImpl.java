@@ -41,23 +41,23 @@ public class ProductImpl implements ProductService {
     @Override
     @Transactional
     public Boolean saveProduct(ProductDtoRequest productDtoRequest) {
-        try {
             Product product = productMapstruct.toProduct(productDtoRequest);
-            productRepository.save(product);
-            return true;
-        } catch (RuntimeException e) {
-            throw new AppException(ErrorCode.FAIL_TO_SAVE_UPDATE);
-        }
+            if (productRepository.existsById(product.getProductId())) {
+                throw new AppException(ErrorCode.FAIL_TO_SAVE_UPDATE);
+            }else {
+                productRepository.save(product);
+                return true;
+            }
     }
 
     @Override
     @Transactional
     public Boolean updateProduct(ProductDtoRequest productDtoRequest) {
-        try{
-            Product product = productMapstruct.toProduct(productDtoRequest);
+        Product product = productMapstruct.toProduct(productDtoRequest);
+        if (productRepository.existsById(product.getProductId())) {
             productRepository.save(product);
             return true;
-        } catch (RuntimeException e) {
+        }else {
             throw new AppException(ErrorCode.FAIL_TO_SAVE_UPDATE);
         }
     }
@@ -66,7 +66,7 @@ public class ProductImpl implements ProductService {
     @Transactional
     public Boolean deleteProduct(Long id) {
         try {
-            var product = productRepository.findById(id).orElseThrow(() -> new AppException(ErrorCode.BAD_SQL));
+            var product = productRepository.findById(id).orElseThrow(() -> new AppException(ErrorCode.T_EMPTY));
             productRepository.delete(product);
             return true;
         } catch (RuntimeException e) {

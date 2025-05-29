@@ -29,7 +29,7 @@ public class UserController {
             );
     }
     @PostMapping("/save")
-    public ResponseEntity<?> save(@RequestBody UserDtoRequest userDtoRequest) throws SQLException {
+    public ResponseEntity<?> save(@RequestBody UserDtoRequest userDtoRequest) {
         return ResponseEntity.ok(
                 ApiResponse.builder()
                         .success(true)
@@ -40,7 +40,7 @@ public class UserController {
     }
 
     @PutMapping("/update")
-    public ResponseEntity<?> update(@RequestBody UserDtoRequest userDtoRequest) throws SQLException {
+    public ResponseEntity<?> update(@RequestBody UserDtoRequest userDtoRequest) {
         return ResponseEntity.ok(
                 ApiResponse.builder()
                         .success(true)
@@ -52,7 +52,7 @@ public class UserController {
     }
 
     @PostMapping("/delete/{username}")
-    public ResponseEntity<?> delete(@RequestParam("username")String username) throws SQLException {
+    public ResponseEntity<?> delete(@RequestParam("username")String username) {
         userService.deleteUserByUserName(username);
         return ResponseEntity.ok(
                 ApiResponse.builder()
