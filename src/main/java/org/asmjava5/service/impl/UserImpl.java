@@ -31,7 +31,7 @@ public class UserImpl implements UserService {
     @Override
     public UserDtoResponse getUserByUserName(String username) {
         var userEntity = userRepository.findUserByUsername(username);
-        if (userEntity == null)throw new AppException(ErrorCode.T_EMPTY);
+        if (userEntity == null) throw new AppException(ErrorCode.T_EMPTY);
         return userMapstruct.toUserDTOResponse(userEntity);
     }
 

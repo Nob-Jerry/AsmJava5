@@ -3,6 +3,7 @@ package org.asmjava5.controller;
 import lombok.RequiredArgsConstructor;
 import org.asmjava5.common.ApiResponse;
 import org.asmjava5.data.dto.request.CategoryDtoRequest;
+import org.asmjava5.data.dto.request.update.CategoryUpdateRequest;
 import org.asmjava5.service.CategoryService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -42,11 +43,11 @@ public class CategoryController {
     }
 
     @PutMapping("/update")
-    public ResponseEntity<?> update(@RequestBody CategoryDtoRequest categoryDtoRequest) {
+    public ResponseEntity<?> update(@RequestBody CategoryUpdateRequest categoryUpdateRequest) {
         return ResponseEntity.ok(ApiResponse.builder()
                 .status(200)
                 .success(true)
-                .data(categoryService.updateCategory(categoryDtoRequest))
+                .data(categoryService.updateCategory(categoryUpdateRequest))
                 .build());
     }
 

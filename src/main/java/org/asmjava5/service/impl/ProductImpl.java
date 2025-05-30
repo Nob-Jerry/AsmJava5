@@ -3,6 +3,7 @@ package org.asmjava5.service.impl;
 import lombok.RequiredArgsConstructor;
 import org.asmjava5.convert.ProductMapstruct;
 import org.asmjava5.data.dto.request.ProductDtoRequest;
+import org.asmjava5.data.dto.request.update.ProductUpdateRequest;
 import org.asmjava5.data.dto.response.ProductDtoResponse;
 import org.asmjava5.data.entity.Product;
 import org.asmjava5.enums.ErrorCode;
@@ -42,18 +43,18 @@ public class ProductImpl implements ProductService {
     @Transactional
     public Boolean saveProduct(ProductDtoRequest productDtoRequest) {
             Product product = productMapstruct.toProduct(productDtoRequest);
-            if (productRepository.existsById(product.getProductId())) {
-                throw new AppException(ErrorCode.FAIL_TO_SAVE_UPDATE);
-            }else {
+            try {
                 productRepository.save(product);
                 return true;
+            }catch (AppException e) {
+                throw new AppException(ErrorCode.FAIL_TO_SAVE_UPDATE);
             }
     }
 
     @Override
     @Transactional
-    public Boolean updateProduct(ProductDtoRequest productDtoRequest) {
-        Product product = productMapstruct.toProduct(productDtoRequest);
+    public Boolean updateProduct(ProductUpdateRequest productUpdateRequest) {
+        Product product = productMapstruct.toUpdateProduct(productUpdateRequest);
         if (productRepository.existsById(product.getProductId())) {
             productRepository.save(product);
             return true;
@@ -65,12 +66,8 @@ public class ProductImpl implements ProductService {
     @Override
     @Transactional
     public Boolean deleteProduct(Long id) {
-        try {
-            var product = productRepository.findById(id).orElseThrow(() -> new AppException(ErrorCode.T_EMPTY));
-            productRepository.delete(product);
-            return true;
-        } catch (RuntimeException e) {
-            throw new AppException(ErrorCode.FAIL_DELETE);
-        }
+        var product = productRepository.findById(id).orElseThrow(() -> new AppException(ErrorCode.T_EMPTY));
+        productRepository.delete(product);
+        return true;
     }
 }

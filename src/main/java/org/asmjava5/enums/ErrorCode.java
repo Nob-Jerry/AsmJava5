@@ -13,6 +13,7 @@ public enum ErrorCode {
     FAIL_GET_LIST(1000, "Fail to get List"),
     FAIL_GET_ONE(1001, "Fail to get One"),
     FAIL_DELETE(1002, "Fail to delete"),
+    ALREADY_EXIST(4002, "Already Exist"),
     T_EMPTY(1000, "is not exist"),
     LIST_EMPTY(1000, "List is empty"),
     PASSWORD_INCORRECT(1001, "Password is incorrect"),
