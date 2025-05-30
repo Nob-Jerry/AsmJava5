@@ -11,7 +11,6 @@ import org.asmjava5.service.UserService;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.sql.SQLException;
 import java.util.List;
 
 @Service
@@ -31,12 +30,9 @@ public class UserImpl implements UserService {
 
     @Override
     public UserDtoResponse getUserByUserName(String username) {
-        try {
-            var userEntity = userRepository.findUserByUsername(username);
-            return userMapstruct.toUserDTOResponse(userEntity);
-        } catch (RuntimeException e) {
-            throw new AppException(ErrorCode.FAIL_GET_ONE);
-        }
+        var userEntity = userRepository.findUserByUsername(username);
+        if (userEntity == null)throw new AppException(ErrorCode.T_EMPTY);
+        return userMapstruct.toUserDTOResponse(userEntity);
     }
 
     @Override
@@ -60,7 +56,7 @@ public class UserImpl implements UserService {
                 userRepository.delete(userEntity);
                 return true;
             }else {
-                throw new AppException(ErrorCode.FAIL_TO_SAVE_UPDATE);
+                throw new AppException(ErrorCode.FAIL_DELETE);
             }
     }
 
