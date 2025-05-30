@@ -3,6 +3,7 @@ package org.asmjava5.service.impl;
 import lombok.RequiredArgsConstructor;
 import org.asmjava5.convert.CategoryMapstruct;
 import org.asmjava5.data.dto.request.CategoryDtoRequest;
+import org.asmjava5.data.dto.request.update.CategoryUpdateRequest;
 import org.asmjava5.data.dto.response.CategoryDtoResponse;
 import org.asmjava5.data.entity.Category;
 import org.asmjava5.enums.ErrorCode;
@@ -45,8 +46,8 @@ public class CategoryImpl implements CategoryService {
     }
 
     @Override
-    public Boolean updateCategory(CategoryDtoRequest categoryDtoRequest){
-        Category category = categoryMapstruct.toCategory(categoryDtoRequest);
+    public Boolean updateCategory(CategoryUpdateRequest categoryUpdateRequest){
+        Category category = categoryMapstruct.toUpdateCategory(categoryUpdateRequest);
         if (categoryRepository.existsById(category.getCategoryId())){
             categoryRepository.save(category);
             return true;

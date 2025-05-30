@@ -24,11 +24,3 @@ spring:
 
 jwt:
   secret-key: "YHeTykc90EQL7tozCEbrLoTVpZ/PxtOQ/MyoDDfaS20k+lHHFVXyVp7vviKI9dEm"
-
-logging:
-  level:
-    com.zaxxer.hikari: OFF
-    hikari: OFF
-    org.hibernate.SQL: OFF
-    org.hibernate.tool.hbm2ddl: OFF
-    org.hibernate.type: OFF
