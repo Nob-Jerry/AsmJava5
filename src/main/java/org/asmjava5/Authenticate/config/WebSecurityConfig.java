@@ -22,8 +22,6 @@ public class WebSecurityConfig {
             "/api/v1/login",
             "/api/v1/introspect",
             "/api/v1/logout",
-            "/user/all",
-            "/cart-item/*"
     };
 
     @Bean
@@ -33,8 +31,7 @@ public class WebSecurityConfig {
         http
                 .authorizeHttpRequests(request -> request
                         .requestMatchers(HttpMethod.POST, PUBLIC_ENDPOINTS).permitAll()
-                        .requestMatchers(HttpMethod.GET, PUBLIC_ENDPOINTS).permitAll()
-                        .requestMatchers("/api/v1/class/getAllClass").hasRole("ADMIN")
+                        .requestMatchers("/user/all").hasRole("ADMIN")
                         .anyRequest().authenticated()
                 )
                 .oauth2ResourceServer(configurer -> configurer
