@@ -94,7 +94,7 @@ public class LoginImpl implements LoginService {
             boolean isInvalidLogout = invalidTokenRepository
                     .existsInvalidTokenByInvalidTokenId(jwtId);
 
-            if (!(isExpired && isVerified && !isInvalidLogout)) {
+            if (isExpired || !isVerified || isInvalidLogout) {
                 throw new AppException(ErrorCode.INVALID_TOKEN);
             }
 
