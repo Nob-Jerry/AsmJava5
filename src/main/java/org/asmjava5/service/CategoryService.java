@@ -7,9 +7,9 @@ import java.sql.SQLException;
 import java.util.List;
 
 public interface CategoryService {
-    List<CategoryDtoResponse> getCategories() throws SQLException;
-    CategoryDtoResponse getCategoryById(Long categoryId) throws SQLException;
-    Boolean deleteCategoryById(Long categoryId) throws SQLException;
-    Boolean updateCategory(CategoryDtoRequest categoryDtoRequest) throws SQLException;
-    Boolean addCategory(CategoryDtoRequest categoryDtoRequest) throws SQLException;
+    List<CategoryDtoResponse> getCategories();
+    CategoryDtoResponse getCategoryById(Long categoryId) ;
+    Boolean deleteCategoryById(Long categoryId);
+    Boolean updateCategory(CategoryDtoRequest categoryDtoRequest);
+    Boolean addCategory(CategoryDtoRequest categoryDtoRequest);
 }
