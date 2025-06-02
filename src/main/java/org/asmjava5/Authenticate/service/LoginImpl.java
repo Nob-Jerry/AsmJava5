@@ -43,7 +43,7 @@ public class LoginImpl implements LoginService {
         String username = request.getUsername();
 
         var user = userRepository.findByUsername(username)
-                .orElseThrow(() -> new AppException(ErrorCode.T_EMPTY));
+                .orElseThrow(() -> new AppException(ErrorCode.USER_EMPTY));
 
         boolean authenticated = passwordEncoder.matches(request.getPassword()
                 , user.getPassword());
