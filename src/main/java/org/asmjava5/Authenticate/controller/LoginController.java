@@ -18,7 +18,7 @@ import org.springframework.web.bind.annotation.RestController;
 import java.text.ParseException;
 
 @RestController
-@RequestMapping("/api/v1")
+@RequestMapping("/api/v1/auth")
 @RequiredArgsConstructor
 public class LoginController {
     private final LoginService loginService;

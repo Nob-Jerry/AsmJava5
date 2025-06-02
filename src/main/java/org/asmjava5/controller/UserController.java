@@ -28,6 +28,16 @@ public class UserController {
                              .build()
             );
     }
+    @GetMapping("/id")
+    public ResponseEntity<?> getUserName(@RequestParam("username") String username) throws SQLException {
+        return ResponseEntity.ok(
+                ApiResponse.builder()
+                        .status(200)
+                        .message("Success")
+                        .data(userService.getUserByUserName(username))
+                        .build()
+        );
+    }
     @PostMapping("/save")
     public ResponseEntity<?> save(@RequestBody UserDtoRequest userDtoRequest) {
         return ResponseEntity.ok(
