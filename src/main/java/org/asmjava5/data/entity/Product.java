@@ -50,6 +50,12 @@ public class Product {
     @Column(name = "IS_NEW")
     private Boolean isNew;
 
+    @Column(name = "DISCOUNT_PERCENT")
+    private Double discountPercent;
+
+    @Column(name = "RATING")
+    private Double rating;
+
     @OneToMany(mappedBy = "product")
     private List<CartItem> cartItems;
 

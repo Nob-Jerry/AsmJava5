@@ -15,4 +15,5 @@ public class ProductDtoRequest {
     private Boolean isHot;
     private Boolean isDiscount;
     private Boolean isNew;
+    private Double discountPercen;
 }

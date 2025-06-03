@@ -12,6 +12,7 @@ public class ProductDtoResponse {
     private String productName;
     private Double productPrice;
     private Integer productQuantity;
+    private Long categoryId;
     private String categoryName;
     private String description;
     private String imageUrl;
@@ -19,4 +20,6 @@ public class ProductDtoResponse {
     private Boolean isHot;
     private Boolean isDiscount;
     private Boolean isNew;
+    private Double discountPercent;
+    private Double rating;
 }
