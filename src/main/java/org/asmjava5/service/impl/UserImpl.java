@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.asmjava5.data.dto.request.UserDtoRequest;
 import org.asmjava5.data.dto.response.UserDtoResponse;
 import org.asmjava5.convert.UserMapstruct;
+import org.asmjava5.data.entity.User;
 import org.asmjava5.enums.ErrorCode;
 import org.asmjava5.exception.AppException;
 import org.asmjava5.repository.UserRepository;
@@ -30,9 +31,8 @@ public class UserImpl implements UserService {
 
     @Override
     public UserDtoResponse getUserByUserName(String username) {
-        var userEntity = userRepository.findUserByUsername(username);
-        if (userEntity == null) throw new AppException(ErrorCode.T_EMPTY);
-        return userMapstruct.toUserDTOResponse(userEntity);
+        User user = userRepository.findByUsername(username).orElseThrow(() -> new AppException(ErrorCode.USER_EMPTY));
+        return userMapstruct.toUserDTOResponse(user);
     }
 
     @Override
@@ -64,10 +64,11 @@ public class UserImpl implements UserService {
     @Override
     @Transactional
     public Boolean updateUser(UserDtoRequest userDtoRequest) {
-            var user = userMapstruct.toUser(userDtoRequest);
-            if (userRepository.findUserByUsername(user.getUsername()) != null) {
-                userRepository.save(user);
-                return false;
+            User  user = userMapstruct.toUser(userDtoRequest);
+            User userEntity = userRepository.findByUsername(user.getUsername()).orElseThrow(() -> new AppException(ErrorCode.USER_EMPTY));
+            if (userEntity != null) {
+                userRepository.updateUser(user);
+                return true;
             }else {
                 throw new AppException(ErrorCode.FAIL_TO_SAVE_UPDATE);
             }

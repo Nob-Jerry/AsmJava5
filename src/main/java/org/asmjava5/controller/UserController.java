@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.*;
 import java.sql.SQLException;
 
 @RestController
-@RequestMapping("/user")
+@RequestMapping("/api/v1/user")
 @RequiredArgsConstructor
 @Slf4j
 public class UserController {
@@ -28,7 +28,7 @@ public class UserController {
                              .build()
             );
     }
-    @GetMapping("/id")
+    @GetMapping("/name")
     public ResponseEntity<?> getUserName(@RequestParam("username") String username) throws SQLException {
         return ResponseEntity.ok(
                 ApiResponse.builder()
