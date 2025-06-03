@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.*;
 import java.sql.SQLException;
 
 @RestController
-@RequestMapping("/product")
+@RequestMapping("/api/v1/product")
 @RequiredArgsConstructor
 @Slf4j
 public class ProductController {

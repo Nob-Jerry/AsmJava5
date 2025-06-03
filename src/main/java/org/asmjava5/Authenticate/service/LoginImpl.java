@@ -50,7 +50,7 @@ public class LoginImpl implements LoginService {
         if (!authenticated) throw new AppException(ErrorCode.PASSWORD_INCORRECT);
 
         return LoginDtoResponse.builder()
-                .token(generateAccessToken(user))
+                .accessToken(generateAccessToken(user))
                 .build();
     }
 
