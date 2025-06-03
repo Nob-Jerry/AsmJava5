@@ -33,6 +33,7 @@ public class ProductImpl implements ProductService {
     }
 
     @Override
+    @Transactional
     public ProductDtoResponse getProductById(Long id) {
         Product product = productRepository.findById(id)
                 .orElseThrow(() -> new AppException(ErrorCode.FAIL_GET_ONE));

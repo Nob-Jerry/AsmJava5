@@ -28,12 +28,12 @@ public class ProductController {
                 .build());
     }
 
-    @GetMapping("/{id}")
-    public ResponseEntity<?> getProductById(@PathVariable("id") Long id) throws SQLException {
+    @GetMapping("/{productId}")
+    public ResponseEntity<?> getProductById(@PathVariable("productId") Long productId)  {
         return ResponseEntity.ok(ApiResponse.builder()
                 .status(200)
                 .success(true)
-                .data(productService.getProductById(id))
+                .data(productService.getProductById(productId))
                 .build());
     }
 
