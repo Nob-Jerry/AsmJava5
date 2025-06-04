@@ -8,17 +8,23 @@ import org.asmjava5.data.entity.User;
 import org.asmjava5.enums.ErrorCode;
 import org.asmjava5.exception.AppException;
 import org.asmjava5.repository.UserRepository;
+import org.asmjava5.service.CartService;
 import org.asmjava5.service.UserService;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Date;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
 public class UserImpl implements UserService {
 
     private final UserRepository userRepository;
+    private final CartService cartService;
+    private final PasswordEncoder passwordEncoder;
 
     private final UserMapstruct userMapstruct;
 
@@ -38,39 +44,49 @@ public class UserImpl implements UserService {
     @Override
     @Transactional
     public Boolean saveUser(UserDtoRequest userDtoRequest) {
+        Optional<User> request = userRepository.findByUsername(userDtoRequest.getUsername());
+        if(request.isEmpty()){
             var user = userMapstruct.toUser(userDtoRequest);
-            if (userRepository.findUserByUsername(user.getUsername()) == null) {
-                userRepository.save(user);
-                return true;
-            }else {
-                throw new AppException(ErrorCode.FAIL_TO_SAVE_UPDATE);
-            }
+            user.setPassword(passwordEncoder.encode(user.getPassword()));
+            user.setRole("USER");
+            user.setCreatedAt(new Date());
+            user.setIsActive(true);
+            userRepository.save(user);
+            cartService.createCart(user.getUserId());
+            return true;
+        }else if (request.get().getUsername().equals(userDtoRequest.getUsername())){
+            throw new AppException(ErrorCode.USERNAME_EXIST);
+        }else if(request.get().getEmail().equals(userDtoRequest.getEmail())){
+            throw new AppException(ErrorCode.USER_MAIL_EXIST);
+        }else {
+            throw new AppException(ErrorCode.USER_ALREADY_EXIST);
+        }
     }
 
 
     @Override
     @Transactional
     public Boolean deleteUserByUserName(String username) {
-            var userEntity = userRepository.findUserByUsername(username);
-            if (userEntity != null) {
-                userRepository.delete(userEntity);
-                return true;
-            }else {
-                throw new AppException(ErrorCode.FAIL_DELETE);
-            }
+        var userEntity = userRepository.findUserByUsername(username);
+        if (userEntity != null) {
+            userRepository.delete(userEntity);
+            return true;
+        } else {
+            throw new AppException(ErrorCode.FAIL_DELETE);
+        }
     }
 
 
     @Override
     @Transactional
     public Boolean updateUser(UserDtoRequest userDtoRequest) {
-            User  user = userMapstruct.toUser(userDtoRequest);
-            User userEntity = userRepository.findByUsername(user.getUsername()).orElseThrow(() -> new AppException(ErrorCode.USER_EMPTY));
-            if (userEntity != null) {
-                userRepository.updateUser(user);
-                return true;
-            }else {
-                throw new AppException(ErrorCode.FAIL_TO_SAVE_UPDATE);
-            }
+        User user = userMapstruct.toUser(userDtoRequest);
+        User userEntity = userRepository.findByUsername(user.getUsername()).orElseThrow(() -> new AppException(ErrorCode.USER_EMPTY));
+        if (userEntity != null) {
+            userRepository.updateUser(user);
+            return true;
+        } else {
+            throw new AppException(ErrorCode.FAIL_TO_SAVE_UPDATE);
+        }
     }
 }

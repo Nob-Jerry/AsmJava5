@@ -5,6 +5,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.Date;
 import java.util.List;
 
 @Data
@@ -49,7 +50,7 @@ public class User {
     private String resetToken;
 
     @Column(name = "CREATED_AT")
-    private String createdAt;
+    private Date createdAt;
 
     @OneToMany(mappedBy = "user")
     private List<Cart> carts;
