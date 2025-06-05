@@ -104,6 +104,7 @@ public class LoginImpl implements LoginService {
     private String generateAccessToken(User user) throws JOSEException {
         String roleName = user.getRole();
         String userName = user.getUsername();
+        Long userId = user.getUserId();
 
         JWSHeader jwsHeader = new JWSHeader(JWSAlgorithm.HS256);
 
@@ -112,6 +113,7 @@ public class LoginImpl implements LoginService {
                 .jwtID(generateUUID())
                 .issuer("Jerry.com")
                 .claim("scope", roleName)
+                .claim("id", userId)
                 .issueTime(new Date())
                 .expirationTime(Date
                         .from(Instant.now()

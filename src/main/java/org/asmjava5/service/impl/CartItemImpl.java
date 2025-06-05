@@ -1,5 +1,6 @@
 package org.asmjava5.service.impl;
 
+import jakarta.persistence.EntityManager;
 import lombok.RequiredArgsConstructor;
 import org.asmjava5.convert.CartItemMapstruct;
 import org.asmjava5.data.dto.request.CartItemDtoRequest;
@@ -14,11 +15,13 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Objects;
 
 @Service
 @RequiredArgsConstructor
 public class CartItemImpl implements CartItemService {
 
+    private final EntityManager entityManager;
     private final CartItemRepository cartItemRepository;
     private final CartItemMapstruct cartItemMapstruct;
 
@@ -39,12 +42,25 @@ public class CartItemImpl implements CartItemService {
 
     @Override
     @Transactional
-    public Boolean updateCartItem(CartItemUpdateRequest cartItemUpdateRequest) {
-        CartItem cartItem = cartItemMapstruct.toUpdateCartItem(cartItemUpdateRequest);
-        CartItem check = cartItemRepository.findById(cartItem.getCartItemId()).orElseThrow(()-> new AppException(ErrorCode.FAIL_TO_SAVE_UPDATE));
-        if (check == null) throw new AppException(ErrorCode.FAIL_TO_SAVE_UPDATE);
-        cartItemRepository.saveAndFlush(cartItem);
-        return true;
+    public CartItemDtoResponse updateCartItem(CartItemUpdateRequest cartItemUpdateRequest) {
+        CartItem check = cartItemRepository.findById(cartItemUpdateRequest.getCartItemId()).orElse(null);
+        if (check == null){
+            Integer insertRow = cartItemRepository.createCartItem(cartItemUpdateRequest.getCartId(), cartItemUpdateRequest.getProductId(), cartItemUpdateRequest.getQuantity());
+            check = cartItemRepository.findByCart_CartIdAndProduct_ProductId(
+                    cartItemUpdateRequest.getCartId(),
+                    cartItemUpdateRequest.getProductId()
+            );
+            entityManager.flush();
+            entityManager.clear();
+        }else if(Objects.equals(check.getCart().getCartId(), cartItemUpdateRequest.getCartId()) && Objects.equals(check.getProduct().getProductId(), cartItemUpdateRequest.getProductId())){
+            Integer rowUpdate = cartItemRepository.updateCartItem(cartItemUpdateRequest);
+            check = cartItemRepository.findById(cartItemUpdateRequest.getCartItemId()).orElseThrow(() -> new AppException(ErrorCode.T_EMPTY));
+            entityManager.flush();
+            entityManager.clear();
+            if (rowUpdate == 0) throw new AppException(ErrorCode.FAIL_TO_SAVE_UPDATE);
+        }
+
+        return cartItemMapstruct.toCartItemDtoResponse(check);
     }
 
     @Override

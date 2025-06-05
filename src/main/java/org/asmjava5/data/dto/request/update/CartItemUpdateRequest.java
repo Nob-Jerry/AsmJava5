@@ -6,7 +6,7 @@ import lombok.Data;
 @Data
 @AllArgsConstructor
 public class CartItemUpdateRequest {
-    private Long itemId;
+    private Long cartItemId;
     private Long cartId;
     private Long productId;
     private Integer quantity;
