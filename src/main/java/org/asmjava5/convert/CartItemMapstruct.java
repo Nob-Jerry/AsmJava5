@@ -17,5 +17,6 @@ public interface CartItemMapstruct {
     CartItemDtoResponse toCartItemDtoResponse(CartItem cartItem);
     List<CartItemDtoResponse> toCartItemResponseList(List<CartItem> cartItemList);
     CartItem toCartItem(CartItemDtoRequest cartItemDtoRequest);
-    CartItem toUpdateCartItem(CartItemUpdateRequest cartItemUpdateRequest);
+    CartItem toCartItem(CartItemUpdateRequest cartItemUpdateRequest);
+    CartItemDtoResponse toItemDtoResponse(CartItemUpdateRequest cartItemUpdateRequest);
 }

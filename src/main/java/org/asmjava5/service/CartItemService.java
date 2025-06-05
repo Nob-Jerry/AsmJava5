@@ -9,6 +9,6 @@ import java.util.List;
 public interface CartItemService {
     List<CartItemDtoResponse> getCartItemList(String username);
     Boolean deleteCartItemList(Long userId, List<Long> productId);
-    Boolean updateCartItem(CartItemUpdateRequest cartItemUpdateRequest);
+    CartItemDtoResponse updateCartItem(CartItemUpdateRequest cartItemUpdateRequest);
     Boolean addCartItem(CartItemDtoRequest cartItemDtoRequest);
 }

@@ -16,7 +16,7 @@ import java.sql.SQLException;
 import java.util.List;
 
 @RestController
-@RequestMapping("/cart-item")
+@RequestMapping("/api/v1/cart-item")
 @RequiredArgsConstructor
 @Slf4j
 public class CartItemController {
@@ -33,18 +33,18 @@ public class CartItemController {
             );
     }
 
-    @PostMapping("/save")
-    public ResponseEntity<?> save(@RequestBody CartItemDtoRequest cartItemDtoRequest)  {
-        return ResponseEntity.ok(
-                ApiResponse.builder()
-                        .status(200)
-                        .message("Success")
-                        .data(cartItemService.addCartItem(cartItemDtoRequest))
-                        .build()
-        );
-    }
+//    @PostMapping("/save")
+//    public ResponseEntity<?> save(@RequestBody CartItemDtoRequest cartItemDtoRequest)  {
+//        return ResponseEntity.ok(
+//                ApiResponse.builder()
+//                        .status(200)
+//                        .message("Success")
+//                        .data(cartItemService.addCartItem(cartItemDtoRequest))
+//                        .build()
+//        );
+//    }
 
-    @PutMapping("/update")
+    @PostMapping("/update")
     public ResponseEntity<?> update(@RequestBody CartItemUpdateRequest cartItemUpdateRequest)  {
         return ResponseEntity.ok(
                 ApiResponse.builder()
