@@ -3,6 +3,7 @@ package org.asmjava5.service.impl;
 import lombok.RequiredArgsConstructor;
 import org.asmjava5.convert.CartMapstruct;
 import org.asmjava5.data.dto.request.CartDtoRequest;
+import org.asmjava5.data.dto.response.CartDtoResponse;
 import org.asmjava5.data.entity.Cart;
 import org.asmjava5.enums.ErrorCode;
 import org.asmjava5.exception.AppException;
@@ -19,6 +20,7 @@ import java.util.Date;
 public class CartImpl implements CartService {
     private final CartRepository cartRepository;
     private final UserRepository userRepository;
+    private final CartMapstruct cartMapstruct;
 
 
     @Override
@@ -36,7 +38,12 @@ public class CartImpl implements CartService {
 
     @Override
     @Transactional
-    public Cart getCart(Long userId) {
-        return cartRepository.findCartByUser_UserId(userId);
+    public CartDtoResponse getCart(Long userId) {
+        Cart cart = cartRepository.findCartByUser_UserId(userId);
+        if (cart == null) {
+            throw new AppException(ErrorCode.T_EMPTY);
+        }else{
+            return cartMapstruct.toCartDtoResponse(cart);
+        }
     }
 }

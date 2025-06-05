@@ -9,8 +9,8 @@ import lombok.Setter;
 @AllArgsConstructor
 public class CartItemDtoResponse {
     private Long cartItemId;
+    private Integer quantity;
     private Long productId;
     private String productName;
-    private Integer quantity;
     private Double productPrice;
 }
