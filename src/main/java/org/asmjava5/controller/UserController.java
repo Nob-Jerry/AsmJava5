@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.asmjava5.common.ApiResponse;
 import org.asmjava5.data.dto.request.UserDtoRequest;
+import org.asmjava5.data.dto.request.update.UserUpdateRequest;
 import org.asmjava5.service.UserService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -60,13 +61,24 @@ public class UserController {
         );
 
     }
+    @PostMapping("/update/userm")
+    public ResponseEntity<?> updateUser(@RequestBody UserUpdateRequest userUpdateRequest) {
+        return ResponseEntity.ok(
+                ApiResponse.builder()
+                        .success(true)
+                        .data(userService.userUpdateRequest(userUpdateRequest))
+                        .message("Successfully saved user")
+                        .build()
+        );
+    }
 
-    @PostMapping("/delete/{username}")
+    @DeleteMapping("/delete")
     public ResponseEntity<?> delete(@RequestParam("username")String username) {
         userService.deleteUserByUserName(username);
         return ResponseEntity.ok(
                 ApiResponse.builder()
                         .status(200)
+                        .success(true)
                         .message("Delete success")
                         .build()
         );
