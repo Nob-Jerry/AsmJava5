@@ -2,6 +2,7 @@ package org.asmjava5.service.impl;
 
 import lombok.RequiredArgsConstructor;
 import org.asmjava5.data.dto.request.UserDtoRequest;
+import org.asmjava5.data.dto.request.update.UserUpdateRequest;
 import org.asmjava5.data.dto.response.UserDtoResponse;
 import org.asmjava5.convert.UserMapstruct;
 import org.asmjava5.data.entity.User;
@@ -67,7 +68,7 @@ public class UserImpl implements UserService {
     @Override
     @Transactional
     public Boolean deleteUserByUserName(String username) {
-        var userEntity = userRepository.findUserByUsername(username);
+        User userEntity = userRepository.findByUsername(username).orElseThrow(() -> new AppException(ErrorCode.USER_EMPTY));
         if (userEntity != null) {
             userRepository.delete(userEntity);
             return true;
@@ -88,5 +89,13 @@ public class UserImpl implements UserService {
         } else {
             throw new AppException(ErrorCode.FAIL_TO_SAVE_UPDATE);
         }
+    }
+
+    @Override
+    public Boolean userUpdateRequest(UserUpdateRequest userUpdateRequest) {
+        User user = userRepository.findByUsername(userUpdateRequest.getUsername()).orElseThrow(() -> new AppException(ErrorCode.USER_EMPTY));
+        User update = userMapstruct.toUserM(userUpdateRequest);
+        userRepository.updateUser(update);
+        return true;
     }
 }

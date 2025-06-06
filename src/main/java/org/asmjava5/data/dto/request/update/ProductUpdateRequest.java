@@ -16,4 +16,5 @@ public class ProductUpdateRequest {
     private Boolean isHot;
     private Boolean isDiscount;
     private Boolean isNew;
+    private Double discountPercent;
 }
