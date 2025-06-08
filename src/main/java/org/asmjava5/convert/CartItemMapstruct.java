@@ -11,15 +11,12 @@ import org.mapstruct.ReportingPolicy;
 
 import java.util.List;
 
-@Mapper(componentModel = "spring"
-//        ,unmappedSourcePolicy = ReportingPolicy.IGNORE
-)
+@Mapper(componentModel = "spring")
 public interface CartItemMapstruct {
     @Mapping(source = "product.productId", target = "productId")
     @Mapping(source = "product.productName", target = "productName")
     @Mapping(source = "product.productPrice", target = "productPrice")
     @Mapping(source = "product.imageUrl", target = "productImage")
-//    @BeanMapping(ignoreUnmappedSourceProperties = {"cart"})
     CartItemDtoResponse toCartItemDtoResponse(CartItem cartItem);
     List<CartItemDtoResponse> toCartItemResponseList(List<CartItem> cartItemList);
     CartItem toCartItem(CartItemDtoRequest cartItemDtoRequest);

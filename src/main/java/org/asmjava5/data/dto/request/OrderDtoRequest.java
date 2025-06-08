@@ -13,7 +13,6 @@ import java.util.List;
 @AllArgsConstructor
 public class OrderDtoRequest {
     private Long userId;
-    private Date orderDate;
     private String orderStatus;
     private Double totalAmount;
     private List<OrderDetailDtoRequest> orderDetails;

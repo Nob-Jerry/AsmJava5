@@ -29,6 +29,8 @@ public class WebSecurityConfig {
             "/api/v1/auth/logout",
             "/api/v1/auth/update-password",
             "/api/v1/auth/register",
+            "/api/v1/auth/forgot-password",
+            "/api/v1/auth/reset-password",
             "/api/v1/verify/**",
             "/api/v1/product/all",
             "/api/v1/user/save",
