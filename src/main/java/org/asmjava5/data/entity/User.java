@@ -1,14 +1,13 @@
 package org.asmjava5.data.entity;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import java.util.Date;
 import java.util.List;
 
-@Data
+@Getter
+@Setter
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
@@ -51,6 +50,9 @@ public class User {
 
     @Column(name = "CREATED_AT")
     private Date createdAt;
+
+    @Column(name = "IS_VERIFIED")
+    private Boolean isVerified;
 
     @OneToMany(mappedBy = "user")
     private List<Cart> carts;

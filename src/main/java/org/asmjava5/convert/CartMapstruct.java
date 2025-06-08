@@ -7,6 +7,7 @@ import org.asmjava5.data.dto.response.CartItemDtoResponse;
 import org.asmjava5.data.entity.Cart;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
+import org.mapstruct.NullValueMappingStrategy;
 
 @Mapper(componentModel = "spring", uses = {CartItemMapstruct.class})
 public interface CartMapstruct {

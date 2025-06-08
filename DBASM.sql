@@ -102,3 +102,7 @@ INSERT INTO Category (category_name) VALUES
     ('Đồ chơi công nghệ');
 INSERT INTO Category (category_name) VALUES
     ('Gia dụng thông minh');
+
+
+ALTER TABLE CATEGORY
+    ADD (DESCRIPTION VARCHAR2(255));

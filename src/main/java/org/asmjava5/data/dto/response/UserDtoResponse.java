@@ -2,8 +2,11 @@ package org.asmjava5.data.dto.response;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
 
-@Data
+@Getter
+@Setter
 @AllArgsConstructor
 public class UserDtoResponse {
     private Long userId;

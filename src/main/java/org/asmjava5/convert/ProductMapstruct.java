@@ -12,6 +12,7 @@ import java.util.List;
 @Mapper(componentModel = "spring")
 public interface ProductMapstruct {
     Product toProduct(ProductDtoRequest productDtoRequest);
+
     Product toUpdateProduct(ProductUpdateRequest productUpdateRequest);
 
     @Mapping(source = "category.categoryId", target = "categoryId")

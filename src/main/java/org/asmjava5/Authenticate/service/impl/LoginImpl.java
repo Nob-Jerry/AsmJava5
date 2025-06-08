@@ -1,4 +1,4 @@
-package org.asmjava5.Authenticate.service;
+package org.asmjava5.Authenticate.service.impl;
 
 import com.nimbusds.jose.*;
 import com.nimbusds.jose.crypto.MACSigner;
@@ -13,6 +13,9 @@ import org.asmjava5.Authenticate.data.dto.response.IntrospectDtoResponse;
 import org.asmjava5.Authenticate.data.dto.response.LoginDtoResponse;
 import org.asmjava5.Authenticate.data.entity.InvalidToken;
 import org.asmjava5.Authenticate.repository.InvalidTokenRepository;
+import org.asmjava5.Authenticate.service.LoginService;
+import org.asmjava5.Authenticate.service.VerifyEmailService;
+import org.asmjava5.common.SendVerificationMail;
 import org.asmjava5.data.entity.User;
 import org.asmjava5.enums.ErrorCode;
 import org.asmjava5.exception.AppException;
@@ -34,6 +37,8 @@ public class LoginImpl implements LoginService {
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
     private final InvalidTokenRepository invalidTokenRepository;
+    private final VerifyEmailService verifyEmailService;
+    private final SendVerificationMail sendVerificationMail;
 
     @Value("${jwt.secret-key}")
     protected String SECRET_KEY;
@@ -44,6 +49,18 @@ public class LoginImpl implements LoginService {
 
         var user = userRepository.findByUsername(username)
                 .orElseThrow(() -> new AppException(ErrorCode.USER_EMPTY));
+
+        if (!user.getIsVerified()){
+            String newActivationToken = verifyEmailService.generateVerifyToken(user);
+            user.setActivationToken(newActivationToken);
+            userRepository.save(user);
+            sendVerificationMail.sendVerificationEmail(user.getEmail(), user.getActivationToken());
+            throw new AppException(ErrorCode.NOT_VERIFIED);
+        }
+
+        if (!user.getIsActive()){
+            throw new AppException(ErrorCode.ACCOUNT_NOT_ACTIVATE);
+        }
 
         boolean authenticated = passwordEncoder.matches(request.getPassword()
                 , user.getPassword());

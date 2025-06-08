@@ -1,11 +1,11 @@
 package org.asmjava5.data.entity;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
-@Data
+@Getter
+@Setter
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
@@ -18,6 +18,7 @@ public class CartItem {
 
     @ManyToOne
     @JoinColumn(name = "CART_ID")
+//    @JsonBackReference
     private Cart cart;
 
     @ManyToOne

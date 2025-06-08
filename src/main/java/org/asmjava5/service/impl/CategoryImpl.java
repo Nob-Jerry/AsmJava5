@@ -11,6 +11,7 @@ import org.asmjava5.exception.AppException;
 import org.asmjava5.repository.CategoryRepository;
 import org.asmjava5.service.CategoryService;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.sql.SQLException;
 import java.util.List;
@@ -23,6 +24,7 @@ public class CategoryImpl implements CategoryService {
     private final CategoryMapstruct categoryMapstruct;
 
     @Override
+    @Transactional
     public List<CategoryDtoResponse> getCategories(){
         List<Category> categories = categoryRepository.findAll();
         if (!categories.isEmpty()) {
@@ -33,6 +35,7 @@ public class CategoryImpl implements CategoryService {
     }
 
     @Override
+    @Transactional
     public CategoryDtoResponse getCategoryById(Long categoryId){
         Category category = categoryRepository.findById(categoryId).orElseThrow(() -> new AppException(ErrorCode.T_EMPTY));
         return categoryMapstruct.toCategoryDtoResponse(category);
