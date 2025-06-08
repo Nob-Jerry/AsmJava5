@@ -1,13 +1,16 @@
 package org.asmjava5.data.entity;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
 
-@Data
+@Getter
+@Setter
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
@@ -26,5 +29,6 @@ public class Cart {
     private Date createAt;
 
     @OneToMany(mappedBy = "cart")
-    private List<CartItem> cartItems;
+//    @JsonManagedReference
+    private List<CartItem> cartItems = new ArrayList<>();
 }

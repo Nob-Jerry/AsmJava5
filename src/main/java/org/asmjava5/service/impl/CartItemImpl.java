@@ -43,7 +43,7 @@ public class CartItemImpl implements CartItemService {
     @Override
     @Transactional
     public CartItemDtoResponse updateCartItem(CartItemUpdateRequest cartItemUpdateRequest) {
-        CartItem check = cartItemRepository.findById(cartItemUpdateRequest.getCartItemId()).orElse(null);
+        CartItem check = cartItemRepository.findByCart_CartIdAndProduct_ProductId(cartItemUpdateRequest.getCartId(), cartItemUpdateRequest.getProductId());
         if (check == null){
             Integer insertRow = cartItemRepository.createCartItem(cartItemUpdateRequest.getCartId(), cartItemUpdateRequest.getProductId(), cartItemUpdateRequest.getQuantity());
             check = cartItemRepository.findByCart_CartIdAndProduct_ProductId(
@@ -52,14 +52,18 @@ public class CartItemImpl implements CartItemService {
             );
             entityManager.flush();
             entityManager.clear();
-        }else if(Objects.equals(check.getCart().getCartId(), cartItemUpdateRequest.getCartId()) && Objects.equals(check.getProduct().getProductId(), cartItemUpdateRequest.getProductId())){
+            if (insertRow > 0){
+                System.out.println("insert success row :" + insertRow);
+            }
+        }else {
             Integer rowUpdate = cartItemRepository.updateCartItem(cartItemUpdateRequest);
-            check = cartItemRepository.findById(cartItemUpdateRequest.getCartItemId()).orElseThrow(() -> new AppException(ErrorCode.T_EMPTY));
-            entityManager.flush();
+            check = cartItemRepository.findByCart_CartIdAndProduct_ProductId(
+                    cartItemUpdateRequest.getCartId(),
+                    cartItemUpdateRequest.getProductId()
+            );            entityManager.flush();
             entityManager.clear();
             if (rowUpdate == 0) throw new AppException(ErrorCode.FAIL_TO_SAVE_UPDATE);
         }
-
         return cartItemMapstruct.toCartItemDtoResponse(check);
     }
 

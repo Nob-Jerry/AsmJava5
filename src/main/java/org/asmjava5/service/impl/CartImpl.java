@@ -40,10 +40,10 @@ public class CartImpl implements CartService {
     @Transactional
     public CartDtoResponse getCart(Long userId) {
         Cart cart = cartRepository.findCartByUser_UserId(userId);
-        if (cart == null) {
-            throw new AppException(ErrorCode.T_EMPTY);
-        }else{
+        if (cart != null) {
             return cartMapstruct.toCartDtoResponse(cart);
+        }else{
+            throw new AppException(ErrorCode.CART_PROBLEM);
         }
     }
 }

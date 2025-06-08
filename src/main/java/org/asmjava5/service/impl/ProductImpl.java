@@ -5,9 +5,11 @@ import org.asmjava5.convert.ProductMapstruct;
 import org.asmjava5.data.dto.request.ProductDtoRequest;
 import org.asmjava5.data.dto.request.update.ProductUpdateRequest;
 import org.asmjava5.data.dto.response.ProductDtoResponse;
+import org.asmjava5.data.entity.Category;
 import org.asmjava5.data.entity.Product;
 import org.asmjava5.enums.ErrorCode;
 import org.asmjava5.exception.AppException;
+import org.asmjava5.repository.CategoryRepository;
 import org.asmjava5.repository.ProductRepository;
 import org.asmjava5.service.ProductService;
 import org.springframework.stereotype.Service;
@@ -21,6 +23,7 @@ public class ProductImpl implements ProductService {
 
     private final ProductRepository productRepository;
     private final ProductMapstruct productMapstruct;
+    private final CategoryRepository categoryRepository;
 
 
     @Override
@@ -56,7 +59,9 @@ public class ProductImpl implements ProductService {
     @Transactional
     public Boolean updateProduct(ProductUpdateRequest productUpdateRequest) {
         Product product = productMapstruct.toUpdateProduct(productUpdateRequest);
+        Category category = categoryRepository.findById(productUpdateRequest.getCategoryId()).orElseThrow(() -> new AppException(ErrorCode.T_EMPTY));
         if (productRepository.existsById(product.getProductId())) {
+            product.setCategory(category);
             productRepository.save(product);
             return true;
         }else {

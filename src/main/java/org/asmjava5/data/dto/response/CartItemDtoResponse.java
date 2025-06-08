@@ -13,4 +13,5 @@ public class CartItemDtoResponse {
     private Long productId;
     private String productName;
     private Double productPrice;
+    private String productImage;
 }

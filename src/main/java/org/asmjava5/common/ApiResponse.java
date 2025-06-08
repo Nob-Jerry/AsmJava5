@@ -14,6 +14,6 @@ import lombok.Setter;
 public class ApiResponse<T> {
     private Integer status;
     private Boolean success;
-    private T data;
     private String message;
+    private T data;
 }

@@ -13,4 +13,5 @@ public interface LoginService {
     LoginDtoResponse authenticate(LoginDtoRequest request) throws JOSEException, ParseException;
     IntrospectDtoResponse introspect(IntrospectDtoRequest request) throws JOSEException, ParseException;
     Void logout(LogoutDtoRequest request) throws ParseException, JOSEException;
+
 }

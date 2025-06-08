@@ -46,7 +46,16 @@ public class UserImpl implements UserService {
     @Transactional
     public Boolean saveUser(UserDtoRequest userDtoRequest) {
         Optional<User> request = userRepository.findByUsername(userDtoRequest.getUsername());
-        if(request.isEmpty()){
+        User userMail = userRepository.findUserByEmail(userDtoRequest.getEmail());
+        if (request.isPresent() ) {
+            if (request.get().getUsername().equals(userDtoRequest.getUsername())){
+                throw new AppException(ErrorCode.USERNAME_EXIST);
+            }else {
+                throw new AppException(ErrorCode.USER_ALREADY_EXIST);
+            }
+        } else if (userMail != null && userDtoRequest.getEmail().equals(userMail.getEmail())) {
+            throw new AppException(ErrorCode.EMAIL_ALREADY_EXIST);
+        } else {
             var user = userMapstruct.toUser(userDtoRequest);
             user.setPassword(passwordEncoder.encode(user.getPassword()));
             user.setRole("USER");
@@ -55,12 +64,6 @@ public class UserImpl implements UserService {
             userRepository.save(user);
             cartService.createCart(user.getUserId());
             return true;
-        }else if (request.get().getUsername().equals(userDtoRequest.getUsername())){
-            throw new AppException(ErrorCode.USERNAME_EXIST);
-        }else if(request.get().getEmail().equals(userDtoRequest.getEmail())){
-            throw new AppException(ErrorCode.USER_MAIL_EXIST);
-        }else {
-            throw new AppException(ErrorCode.USER_ALREADY_EXIST);
         }
     }
 

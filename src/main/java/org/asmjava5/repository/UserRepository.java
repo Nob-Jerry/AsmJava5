@@ -14,7 +14,8 @@ import java.util.Optional;
 @Repository
 public interface UserRepository  extends JpaRepository<User, Long> {
     Optional<User> findByUsername(String username);
-    User findUserByUsername(String username);
+
+    User findUserByEmail(String email);
 
     @Modifying
     @Transactional
@@ -25,4 +26,8 @@ public interface UserRepository  extends JpaRepository<User, Long> {
     @Transactional
     @Query("UPDATE User u SET u.password = :password WHERE u.username = :username")
     Integer updatePassword(@Param("password") String password, @Param("username") String username);
+
+    boolean existsByUsername(String username);
+
+    boolean existsByEmail(String email);
 }
