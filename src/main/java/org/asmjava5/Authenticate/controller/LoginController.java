@@ -17,8 +17,10 @@ import java.text.ParseException;
 @RequestMapping("/api/v1/auth")
 @RequiredArgsConstructor
 public class LoginController {
+
     private final RegisterService registerService;
     private final LoginService loginService;
+
     @PostMapping("/login")
     public LoginDtoResponse login(@RequestBody LoginDtoRequest request) throws JOSEException, ParseException {
         return loginService.authenticate(request);
@@ -61,4 +63,5 @@ public class LoginController {
                 .message("Register successfully")
                 .build();
     }
+
 }

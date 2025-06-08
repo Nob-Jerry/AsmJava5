@@ -6,6 +6,7 @@ import com.nimbusds.jose.crypto.MACVerifier;
 import com.nimbusds.jwt.JWTClaimsSet;
 import com.nimbusds.jwt.SignedJWT;
 import lombok.RequiredArgsConstructor;
+import org.asmjava5.Authenticate.data.dto.request.ForgotPasswordRequest;
 import org.asmjava5.Authenticate.repository.InvalidTokenRepository;
 import org.asmjava5.Authenticate.service.VerifyEmailService;
 import org.asmjava5.data.entity.User;
@@ -13,6 +14,7 @@ import org.asmjava5.enums.ErrorCode;
 import org.asmjava5.exception.AppException;
 import org.asmjava5.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.text.ParseException;
@@ -25,6 +27,7 @@ import java.util.UUID;
 @RequiredArgsConstructor
 public class VerifyEmailImpl implements VerifyEmailService {
     private final UserRepository userRepository;
+    private final PasswordEncoder passwordEncoder;
     private final InvalidTokenRepository invalidTokenRepository;
 
     @Value("${jwt.secret-key}")
@@ -32,7 +35,7 @@ public class VerifyEmailImpl implements VerifyEmailService {
 
 
     @Override
-    public boolean verifyEmailByToken(String activationToken) {
+    public Boolean verifyEmailByToken(String activationToken) {
         try {
             SignedJWT signedJWT = verifyJWT(activationToken);
             String email = signedJWT.getJWTClaimsSet().getSubject();
@@ -47,6 +50,22 @@ public class VerifyEmailImpl implements VerifyEmailService {
             user.setActivationToken(null);
             userRepository.save(user);
             return true;
+        } catch (ParseException | JOSEException e) {
+            throw new AppException(ErrorCode.INVALID_TOKEN);
+        }
+    }
+
+    @Override
+    public void resetPasswordByToken(ForgotPasswordRequest forgotPasswordRequest) {
+        try {
+            SignedJWT signedJWT = verifyJWT(forgotPasswordRequest.getToken());
+            String email = signedJWT.getJWTClaimsSet().getSubject();
+            User user = userRepository.findUserByEmail(email);
+            if (user == null) {
+                throw new AppException(ErrorCode.USER_EMPTY);
+            }
+            user.setPassword(passwordEncoder.encode(forgotPasswordRequest.getPassword()));
+            userRepository.save(user);
         } catch (ParseException | JOSEException e) {
             throw new AppException(ErrorCode.INVALID_TOKEN);
         }

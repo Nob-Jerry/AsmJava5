@@ -11,7 +11,9 @@ import org.asmjava5.exception.AppException;
 import org.asmjava5.repository.OrderRepository;
 import org.asmjava5.service.OrderService;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Date;
 import java.util.List;
 
 @Service
@@ -27,6 +29,7 @@ public class OrderImpl implements OrderService {
     }
 
     @Override
+    @Transactional
     public List<OrderDtoResponse> getOrders() {
         List<Order> orders = orderRepository.findAll();
         if (orders.isEmpty()) throw new AppException(ErrorCode.LIST_EMPTY);
@@ -35,13 +38,15 @@ public class OrderImpl implements OrderService {
 
     @Override
     public Boolean addOrder(OrderDtoRequest orderDtoRequest) {
-        try{
-            orderRepository.save(orderMapstruct.toOrder(orderDtoRequest));
+        Order check = orderRepository.findById(orderDtoRequest.getUserId()).orElse(null);
+        if (check == null) {
+            Order order = orderMapstruct.toOrder(orderDtoRequest);
+            order.setOrderDate(new Date());
+            orderRepository.save(order);
             return true;
-        }catch (AppException e){
+        } else {
             throw new AppException(ErrorCode.FAIL_TO_SAVE_UPDATE);
         }
-
     }
 
     @Override
