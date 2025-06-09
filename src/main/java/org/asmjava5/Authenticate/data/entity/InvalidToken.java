@@ -9,7 +9,7 @@ import lombok.*;
 import java.sql.Timestamp;
 
 @Entity
-@Table(name = "INVALIDATED_TOKEN")
+@Table(name = "INVALID_TOKEN")
 @Getter
 @Setter
 @Builder
