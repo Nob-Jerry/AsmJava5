@@ -3,6 +3,7 @@ package org.asmjava5.Authenticate.controller;
 import com.nimbusds.jose.JOSEException;
 import lombok.RequiredArgsConstructor;
 import org.asmjava5.Authenticate.data.dto.request.*;
+import org.asmjava5.Authenticate.data.dto.response.GoogleLoginResponse;
 import org.asmjava5.Authenticate.data.dto.response.IntrospectDtoResponse;
 import org.asmjava5.Authenticate.data.dto.response.LoginDtoResponse;
 import org.asmjava5.Authenticate.service.LoginService;
@@ -11,6 +12,8 @@ import org.asmjava5.common.ApiResponse;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
+import java.io.IOException;
+import java.security.GeneralSecurityException;
 import java.text.ParseException;
 
 @RestController
@@ -24,6 +27,11 @@ public class LoginController {
     @PostMapping("/login")
     public LoginDtoResponse login(@RequestBody LoginDtoRequest request) throws JOSEException, ParseException {
         return loginService.authenticate(request);
+    }
+
+    @PostMapping("/google-login")
+    public GoogleLoginResponse googleLogin(@RequestBody GoogleLoginRequest request) throws JOSEException, ParseException, GeneralSecurityException, IOException {
+        return loginService.googleLogin(request);
     }
 
     @PostMapping("/introspect")

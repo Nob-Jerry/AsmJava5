@@ -25,6 +25,7 @@ public class WebSecurityConfig {
 
     private final String[] PUBLIC_ENDPOINTS = {
             "/api/v1/auth/login",
+            "/api/v1/auth/google-login",
             "/api/v1/auth/introspect",
             "/api/v1/auth/logout",
             "/api/v1/auth/update-password",

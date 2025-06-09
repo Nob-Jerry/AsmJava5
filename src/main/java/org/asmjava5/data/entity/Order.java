@@ -32,6 +32,18 @@ public class Order {
     @Column(name = "TOTAL_AMOUNT")
     private Double totalAmount;
 
+    @Column(name = "RECEIVER_NAME")
+    private String receiverName;
+
+    @Column(name = "RECEIVER_PHONE")
+    private String receiverPhone;
+
+    @Column(name = "RECEIVER_ADDRESS")
+    private String receiverAddress;
+
+    @Column(name = "PAYMENT_METHOD")
+    private String paymentMethod;
+
     @OneToMany(mappedBy = "order")
     private List<OrderDetail> orderDetails = new ArrayList<>();
 

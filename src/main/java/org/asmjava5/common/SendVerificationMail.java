@@ -7,6 +7,7 @@ import org.springframework.stereotype.Component;
 @RequiredArgsConstructor
 public class SendVerificationMail {
     private final SendMail mail;
+    private final SendMail sendMail;
 
     public void sendVerificationEmail(String to, String token) {
         String verifyLink = "http://localhost:5173/verify-email?activationToken=" + token;

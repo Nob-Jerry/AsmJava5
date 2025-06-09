@@ -18,4 +18,5 @@ public class UserDtoResponse {
     private String role;
     private Boolean isActive;
     private String createdAt;
+    private Boolean isGoogleUser;
 }

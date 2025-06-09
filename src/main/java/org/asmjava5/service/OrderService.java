@@ -8,6 +8,7 @@ import java.util.List;
 
 public interface OrderService {
     OrderDtoResponse getOrder(Long id);
+    List<OrderDtoResponse> getOrderByUser(Long userId);
     List<OrderDtoResponse> getOrders();
     Boolean addOrder(OrderDtoRequest orderDtoRequest);
     Boolean updateOrder(OrderUpdateRequest orderUpdateRequest);

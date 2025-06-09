@@ -9,7 +9,6 @@ import lombok.Setter;
 @Setter
 @AllArgsConstructor
 public class OrderDetailDtoRequest {
-    private Long orderId;
     private Long productId;
     private Integer quantity;
     private Double price;

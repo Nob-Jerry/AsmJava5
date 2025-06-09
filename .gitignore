@@ -4,11 +4,6 @@ target/
 !**/src/main/**/target/
 !**/src/test/**/target/
 
-# Ignore sensitive configuration
-src/main/resources/application.yml
-# But keep a sample for others to copy from
-!src/main/resources/application-sample.yml
-
 ### STS ###
 .apt_generated
 .classpath

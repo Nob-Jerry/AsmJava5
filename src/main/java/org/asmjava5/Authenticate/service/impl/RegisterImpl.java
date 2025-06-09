@@ -46,6 +46,7 @@ public class RegisterImpl implements RegisterService {
         user.setIsActive(true);
         user.setIsVerified(false);
         user.setCreatedAt(new Date());
+        user.setIsGoogleUser(false);
         String activationToken = verifyEmailService.generateVerifyToken(user);
         user.setActivationToken(activationToken);
         userRepository.save(user);

@@ -13,7 +13,11 @@ import java.util.List;
 @AllArgsConstructor
 public class OrderDtoRequest {
     private Long userId;
-    private String orderStatus;
     private Double totalAmount;
+    private String status;
+    private String receiverName;
+    private String receiverPhone;
+    private String receiverAddress;
+    private String paymentMethod;
     private List<OrderDetailDtoRequest> orderDetails;
 }

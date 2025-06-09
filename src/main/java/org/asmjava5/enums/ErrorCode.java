@@ -30,6 +30,7 @@ public enum ErrorCode {
     NOT_VERIFIED(1111, "User Not Verified!. Please check your email address"),
     CART_PROBLEM(1111, "Have some problem with your cart. Please contact with QuLyn"),
     ACCOUNT_NOT_ACTIVATE(1111, "Your account is not active. Please contact with QuLyn"),
+    GOOGLE_USER(501,"Please login by Google" ),
     ;
 
     private final Integer status;
