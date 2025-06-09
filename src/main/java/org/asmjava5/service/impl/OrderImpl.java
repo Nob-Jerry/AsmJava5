@@ -57,7 +57,6 @@ public class OrderImpl implements OrderService {
             Order order = orderMapstruct.toOrder(orderDtoRequest);
             order.setOrderDate(new Date());
             orderRepository.save(order);
-            Double totalAmount = 0.0;
             for (OrderDetailDtoRequest request : orderDtoRequest.getOrderDetails()) {
                 OrderDetail orderDetail = new OrderDetail();
                 orderDetail.setOrder(order);
@@ -66,10 +65,7 @@ public class OrderImpl implements OrderService {
                 orderDetail.setQuantity(request.getQuantity());
                 orderDetail.setPrice(request.getPrice());
                 orderDetailRepository.save(orderDetail);
-                totalAmount += orderDetail.getPrice();
             }
-            order.setTotalAmount(totalAmount);
-            orderRepository.save(order);
             return true;
         }catch (AppException e) {
             throw new AppException(ErrorCode.FAIL_TO_SAVE_UPDATE);
@@ -78,7 +74,8 @@ public class OrderImpl implements OrderService {
 
     @Override
     public Boolean updateOrder(OrderUpdateRequest orderUpdateRequest) {
-        Order order = orderRepository.findById(orderUpdateRequest.getOrderId()).orElseThrow(()-> new AppException(ErrorCode.FAIL_TO_SAVE_UPDATE));
+        Order check = orderRepository.findById(orderUpdateRequest.getOrderId()).orElseThrow(()-> new AppException(ErrorCode.FAIL_TO_SAVE_UPDATE));
+        Order order = orderMapstruct.toUpdateOrder(orderUpdateRequest, check);
         orderRepository.save(order);
         return true;
     }

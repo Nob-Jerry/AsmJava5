@@ -52,9 +52,6 @@ public class CartItemImpl implements CartItemService {
             );
             entityManager.flush();
             entityManager.clear();
-            if (insertRow > 0){
-                System.out.println("insert success row :" + insertRow);
-            }
         }else {
             Integer rowUpdate = cartItemRepository.updateCartItem(cartItemUpdateRequest);
             check = cartItemRepository.findByCart_CartIdAndProduct_ProductId(

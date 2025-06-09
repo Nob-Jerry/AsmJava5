@@ -18,5 +18,9 @@ public class OrderDtoResponse {
     private Date orderDate;
     private String status;
     private Double totalAmount;
+    private String receiverName;
+    private String receiverPhone;
+    private String receiverAddress;
+    private String paymentMethod;
     private List<OrderDetailDtoResponse> orderDetails;
 }

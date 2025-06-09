@@ -49,7 +49,7 @@ public class OrderController {
                         .data(orderService.addOrder(orderDtoRequest))
                 .build());
     }
-    @PutMapping("/update")
+    @PostMapping("/update")
     public ResponseEntity<?> updateOrder(@RequestBody OrderUpdateRequest orderUpdateRequest) {
         return ResponseEntity.ok(ApiResponse.builder()
                 .status(200)

@@ -54,6 +54,9 @@ public class User {
     @Column(name = "IS_VERIFIED")
     private Boolean isVerified;
 
+    @Column(name = "IS_GOOGLE_USER")
+    private Boolean isGoogleUser;
+
     @OneToMany(mappedBy = "user")
     private List<Cart> carts;
 
