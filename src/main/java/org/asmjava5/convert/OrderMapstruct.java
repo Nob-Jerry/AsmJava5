@@ -16,8 +16,10 @@ public interface OrderMapstruct {
     @Mapping(source = "user.username",target = "username")
     @Mapping(source = "order.orderDetails", target = "orderDetails")
     OrderDtoResponse toOrderDtoResponse(Order order);
+
     List<OrderDtoResponse> toOrderDtoResponseList(List<Order> orders);
+
+    @Mapping(source = "userId",target = "user.userId")
     Order toOrder(OrderDtoRequest orderDtoRequest);
     Order toUpdateOrder(OrderUpdateRequest orderUpdateRequest);
-    
 }
