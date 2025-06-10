@@ -16,7 +16,7 @@ public interface OrderMapstruct {
 
     @Mapping(source = "status", target = "status")
     @Mapping(source = "user.userId",target = "userId")
-    @Mapping(source = "user.username",target = "username")
+    @Mapping(source = "user.fullname",target = "fullName")
     @Mapping(source = "order.orderDetails", target = "orderDetails")
     OrderDtoResponse toOrderDtoResponse(Order order);
 

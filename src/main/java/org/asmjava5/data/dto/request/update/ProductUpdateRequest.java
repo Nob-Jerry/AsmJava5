@@ -1,15 +1,13 @@
 package org.asmjava5.data.dto.request.update;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 
 import java.util.Date;
 
 @Getter
 @Setter
 @AllArgsConstructor
+@NoArgsConstructor
 public class ProductUpdateRequest {
     private Long productId;
     private String productName;

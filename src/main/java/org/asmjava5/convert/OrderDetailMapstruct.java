@@ -14,6 +14,7 @@ import java.util.List;
 public interface OrderDetailMapstruct {
     @Mapping(source = "product.productId", target = "productId")
     @Mapping(source = "product.productName", target = "productName")
+    @Mapping(source = "product.imageUrl", target = "productImage")
     OrderDetailDtoResponse toOrderDetailDtoResponse(OrderDetail orderDetail);
     List<OrderDetailDtoResponse> toOrderDetailDtoResponseList(List<OrderDetail> orderDetailList);
 

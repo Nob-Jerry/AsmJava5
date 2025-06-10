@@ -10,6 +10,7 @@ import lombok.Setter;
 @AllArgsConstructor
 public class OrderDetailDtoResponse {
     private Long orderDetailId;
+    private String productImage;
     private Long productId;
     private String productName;
     private Integer quantity;
