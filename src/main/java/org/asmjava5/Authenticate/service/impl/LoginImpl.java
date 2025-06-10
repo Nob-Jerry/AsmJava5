@@ -68,6 +68,7 @@ public class LoginImpl implements LoginService {
             sendVerificationMail.sendVerificationEmail(user.getEmail(), user.getActivationToken());
             throw new AppException(ErrorCode.NOT_VERIFIED);
         }
+
         if (user.getIsGoogleUser()){
             throw new AppException(ErrorCode.GOOGLE_USER);
         }

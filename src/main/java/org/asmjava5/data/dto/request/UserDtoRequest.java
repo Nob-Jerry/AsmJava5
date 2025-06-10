@@ -5,7 +5,9 @@ import lombok.*;
 import java.util.Date;
 
 @Getter
-@Setter@AllArgsConstructor
+@Setter
+@AllArgsConstructor
+@NoArgsConstructor
 public class UserDtoRequest {
     private String username;
     private String email;

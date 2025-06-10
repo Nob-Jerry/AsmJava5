@@ -1,13 +1,11 @@
 package org.asmjava5.data.dto.request;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 
 @Getter
 @Setter
 @AllArgsConstructor
+@NoArgsConstructor
 public class ProductDtoRequest {
     private String productName;
     private Double productPrice;
