@@ -39,7 +39,7 @@ public class LoginTest {
     public void testCorrectUsernameWrongPassword() {
         driver.navigate().refresh();
 
-        driver.findElement(By.name("username")).sendKeys("correctUser");
+        driver.findElement(By.name("username")).sendKeys("jerry");
         driver.findElement(By.name("password")).sendKeys("wrongPass");
         driver.findElement(By.cssSelector("button[type='submit']")).click();
 
@@ -62,5 +62,4 @@ public class LoginTest {
 
         Assert.assertTrue(error.isDisplayed());
     }
-
 } 
