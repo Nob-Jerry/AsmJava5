@@ -120,20 +120,16 @@
             <version>5.2.0</version>
             <scope>test</scope>
         </dependency>
-        <!-- ✅ Selenium Java -->
         <dependency>
             <groupId>org.seleniumhq.selenium</groupId>
             <artifactId>selenium-java</artifactId>
-            <version>4.25.0</version> <!-- phiên bản mới nhất tính đến 2025 -->
+            <version>4.25.0</version>
         </dependency>
-        <!-- ✅ WebDriverManager (quản lý ChromeDriver tự động) -->
         <dependency>
             <groupId>io.github.bonigarcia</groupId>
             <artifactId>webdrivermanager</artifactId>
             <version>5.8.0</version>
         </dependency>
-
-        <!-- ✅ TestNG -->
         <dependency>
             <groupId>org.testng</groupId>
             <artifactId>testng</artifactId>

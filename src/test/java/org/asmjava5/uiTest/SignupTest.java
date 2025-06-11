@@ -35,9 +35,9 @@ public class SignupTest {
                 By.xpath("//input[@placeholder='Tên đăng nhập']")));
         usernameInput.sendKeys("newuser");
 
-        driver.findElement(By.xpath("//input[@placeholder='Email']")).sendKeys("newuser@email.com");
-        driver.findElement(By.xpath("//input[@placeholder='Mật khẩu']")).sendKeys("StrongPass123");
-        driver.findElement(By.xpath("//input[@placeholder='Nhập lại mật khẩu']")).sendKeys("StrongPass123");
+        driver.findElement(By.xpath("//input[@placeholder='Email']")).sendKeys("trantuan88261@gmail.com");
+        driver.findElement(By.xpath("//input[@placeholder='Mật khẩu']")).sendKeys("Def456");
+        driver.findElement(By.xpath("//input[@placeholder='Nhập lại mật khẩu']")).sendKeys("Def456");
 
         driver.findElement(By.cssSelector("button[type='submit']")).click();
 
@@ -50,7 +50,7 @@ public class SignupTest {
 
 
     @Test
-    public void testWeakPassword() {
+    public void testInvalidEmail() {
         driver.get("http://localhost:5173/signup");
 
         WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
@@ -70,15 +70,15 @@ public class SignupTest {
     }
 
     @Test
-    public void testInvalidEmail() {
+    public void testWeakPassword() {
         driver.get("http://localhost:5173/signup");
 
         WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
 
-        driver.findElement(By.xpath("//input[@placeholder='Tên đăng nhập']")).sendKeys("newuser1");
-        driver.findElement(By.xpath("//input[@placeholder='Email']")).sendKeys("newuser1@email.com");
-        driver.findElement(By.xpath("//input[@placeholder='Mật khẩu']")).sendKeys("123");
-        driver.findElement(By.xpath("//input[@placeholder='Nhập lại mật khẩu']")).sendKeys("123");
+        driver.findElement(By.xpath("//input[@placeholder='Tên đăng nhập']")).sendKeys("tuan123");
+        driver.findElement(By.xpath("//input[@placeholder='Email']")).sendKeys("trantuan@gmail.com");
+        driver.findElement(By.xpath("//input[@placeholder='Mật khẩu']")).sendKeys("123456");
+        driver.findElement(By.xpath("//input[@placeholder='Nhập lại mật khẩu']")).sendKeys("123456");
 
         driver.findElement(By.cssSelector("button[type='submit']")).click();
 

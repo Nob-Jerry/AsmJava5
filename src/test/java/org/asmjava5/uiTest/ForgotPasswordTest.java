@@ -27,7 +27,7 @@ public class ForgotPasswordTest {
     }
 
     @Test
-    public void testForgotPasswordConfirmationPopup() throws IOException, IOException {
+    public void testForgotPassword() throws IOException, IOException {
         driver.get("http://localhost:5173/forgot-password");
 
         WebDriverWait wait = new WebDriverWait(driver, Duration.ofMinutes(5));
@@ -60,7 +60,7 @@ public class ForgotPasswordTest {
     public void testInvalidEmailInForgotPassword() throws IOException {
         driver.get("http://localhost:5173/forgot-password");
 
-        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(15)); // Tăng timeout nếu xử lý chậm
+        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(15));
 
         WebElement emailInput = wait.until(ExpectedConditions.visibilityOfElementLocated(
                 By.xpath("//input[@placeholder='email@example.com']")

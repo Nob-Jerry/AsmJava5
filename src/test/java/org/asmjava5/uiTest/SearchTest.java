@@ -70,4 +70,26 @@ public class SearchTest {
         Assert.assertTrue(destinationFile.exists());
     }
 
+    @Test
+    public void testSearchByQuantity() throws IOException, InterruptedException {
+        driver.get("http://localhost:5173/product");
+
+        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
+
+        WebElement quantityInput = wait.until(ExpectedConditions.visibilityOfElementLocated(
+                By.cssSelector("input[type='number'][placeholder='0']")
+        ));
+        quantityInput.sendKeys("30000000");
+
+        Thread.sleep(1000);
+
+        File screenshot = ((TakesScreenshot) driver).getScreenshotAs(OutputType.FILE);
+
+        String path = "src/test/java/org/asmjava5/img/search_quantity.png";
+        File destinationFile = new File(path);
+        FileUtils.copyFile(screenshot, destinationFile);
+
+        Assert.assertTrue(destinationFile.exists());
+    }
+
 } 
